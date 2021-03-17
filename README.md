@@ -1,4 +1,4 @@
-# NLEdit: Correcting Semantic Parse Errors through Natural Language Interaction
+# NL-Edit: Correcting Semantic Parse Errors through Natural Language Interaction
 
 Soon, we will use this repo to release the code and datasets used in 
 
@@ -11,7 +11,7 @@ NAACL 2021.
  
 ```
 @inproceedings{Elgohary21NLEdit,
-Title = {NL-EDIT: Correcting Semantic Parse Errors through Natural Language Interaction},
+Title = {{NL-EDIT}: Correcting Semantic Parse Errors through Natural Language Interaction},
 Author = {Ahmed Elgohary and Christopher Meek and Matthew Richardson and Adam Fourney and Gonzalo Ramos and Ahmed Hassan Awadallah},
 Year = {2021},
 Booktitle = {Conference of the North American Chapter of the Association for Computational Linguistics (NAACL)},
