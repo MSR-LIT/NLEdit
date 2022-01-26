@@ -1,0 +1,57 @@
+select: _cols_, from: _table_, where: _op_, _col_, _val_	_sel_cols_one_tbl_whr
+select: _cols_, from: _table_, orderby: _col_	_sel_cols_one_tbl_order
+select: _cols_, from: _table_, _table_ with join cond, where: _op_, _col_, _val_	_sel_cols_j2_cond
+select: _cols_, from: _table_	_sel_cols_one_tbl
+select: _agg_ _col_, from: _table_	_sel_aggr_col
+select: _cols_, from: _table_, _table_, _table_ with join cond, where: _op_, _col_, _val_	_sel_cols_j3_cond
+select: _cols_, from: _table_, _table_ with join cond, groupby: _cols_, orderby: _agg_ _col_	_sel_cols_j2_groupby_order_agg
+select: _cols_, from: _table_, groupby: _cols_, orderby: _agg_ _col_	_sel_group_orderaggr
+select: _cols_, from: _table_, where: _op_, _col_, _val_, _op_, _col_, _val_	_sel_two_conds
+select: _col_, _agg_ _col_, from: _table_, groupby: _cols_	_sel_col_aggcol_groupby
+select: _agg_ _col_, from: _table_, where: _op_, _col_, _val_	_sel_agg_whr
+select: _cols_, from: _table_, _table_ with join cond	_sel_cols_j2
+select: _cols_, from: _table_, _table_ with join cond, groupby: _cols_, having: _op_, _agg_ _col_, _val_	_sel_cols_j2_groupby_having_agg
+select: _cols_, from: _table_, groupby: _cols_, having: _op_, _agg_ _col_, _val_	_sel_group_having_agg
+select: _cols_, from: _table_, where: _op_, _col_, select: _cols_, from: _table_	_sel_whr_nested
+select: _agg_ _col_, from: _table_, _table_ with join cond, where: _op_, _col_, _val_	_sel_aggcol_j2_cond
+select: _cols_, from: _table_, _table_ with join cond, where: _op_, _col_, _val_, _op_, _col_, _val_	_sel_cols_j2_two_cond
+select: _cols_, from: _table_, _table_ with join cond, orderby: _col_	_sel_cols_j2_order
+select: _col_, _agg_ _col_, from: _table_, _table_ with join cond, groupby: _cols_	_sel_col_aggcol_j2_grouby
+select: _cols_, from: _table_, _table_, _table_ with join cond, where: _op_, _col_, _val_, _op_, _col_, _val_	_sel_cols_j3_two_cond
+select: _agg_ _col_, _col_, from: _table_, groupby: _cols_	_sel_aggcol_col_groupby
+select: _agg_ _col_, from: _table_, _table_ with join cond, where: _op_, _col_, _val_, _op_, _col_, _val_	_sel_aggcol_j2_two_cond
+select: _agg_ _col_, _agg_ _col_, from: _table_	_sel_two_agg
+select: _agg_ _col_, from: _table_, where: _op_, _col_, select: _cols_, from: _table_	_sel_aggcol_whr_nested
+select: _cols_, from: _table_, where: _op_, _col_, _val_, orderby: _col_	_sel_cols_whr_orderby
+select: _agg_ _col_, from: _table_, where: _op_, _col_, _val_, _op_, _col_, _val_	_sel_aggcol_two_conds
+select: _cols_, from: _table_, where: _op_, _col_, select: _agg_ _col_, from: _table_	_sel_whr_nested_agg
+select: _cols_, from: _table_, _table_, _table_ with join cond	_sel_cols_j3
+select: _col_, _agg_ _col_, from: _table_, groupby: _cols_, orderby: _agg_ _col_	_sel_col_aggcol_group_orderby_agg
+select: _agg_ _col_, from: _table_, _table_, _table_ with join cond, where: _op_, _col_, _val_	_sel_aggcol_j3_cond
+select: _agg_ _col_, _col_, from: _table_, _table_ with join cond, groupby: _cols_	_sel_aggcol_col_j2_groupby
+select: _cols_, from: _table_, where: _op_, _col_, select: _agg_ _col_, from: _table_, where: _op_, _col_, _val_	_sel_cols_whr_nested_agg_whr
+select: _cols_, from: _table_, _table_, _table_ with join cond, orderby: _col_	_sel_cols_j3_order
+select: _cols_, from: _table_, where: _op_, _col_, _val_, _val_	_sel_whr_two_vals
+select: _cols_, from: _table_, _table_, _table_ with join cond, groupby: _cols_, orderby: _agg_ _col_	_sel_cols_j3_groupby_order_agg
+select: _agg_ _col_, _agg_ _col_, _agg_ _col_, from: _table_	_sel_three_aggcol
+select: _col_, _col_, _agg_ _col_, from: _table_, _table_ with join cond, groupby: _cols_	_sel_col_col_aggcol_j2_groupby
+select: _cols_, from: _table_, _table_ with join cond, where: _op_, _col_, _val_, groupby: _cols_, orderby: _agg_ _col_	_sel_cols_j2_cond_groupby_order_agg
+select: _col_, _agg_ _col_, from: _table_, _table_ with join cond, groupby: _cols_, orderby: _agg_ _col_	_sel_col_aggcol_j2_groupby_order_agg
+select: _cols_, from: _table_, _table_ with join cond, where: _op_, _col_, select: _agg_ _col_, from: _table_	_sel_cols_j2_whr_nested_agg
+select: _cols_, from: _table_, _table_ with join cond, where: _op_, _col_, _val_, orderby: _col_	_sel_cols_j2_cond_orderby
+select: _cols_, from: _table_, where: _op_, _col_, select: _cols_, from: _table_, where: _op_, _col_, _val_	_sel_col_whr_nested_whr
+select: _agg_ _col_, _col_, from: _table_, where: _op_, _col_, _val_, groupby: _cols_	_sel_aggcol_col_whr_onecond_groupby
+select: _col_, _agg_ _col_, from: _table_, where: _op_, _col_, _val_, groupby: _cols_	_sel_col_aggcol_whr_onecond_groupby
+select: _agg_ _col_, _agg_ _col_, from: _table_, where: _op_, _col_, _val_	_sel_two_agg_whr
+select: _cols_, from: _table_, where: _op_, _col_, _val_, groupby: _cols_, orderby: _agg_ _col_	_sel_cols_whr_cond_group_orderby_agg
+select: _agg_ _col_, from: _table_, _table_, _table_ with join cond, where: _op_, _col_, _val_, _op_, _col_, _val_	_sel_aggcol_j3_two_cond
+select: _agg_ _col_, from: _table_, where: _op_, _col_, select: _cols_, from: _table_, where: _op_, _col_, _val_	_sel_agg_whr_nested_whr
+select: _agg_ _col_, from: _table_, _table_ with join cond, where: _op_, _col_, _val_, _op_, _col_, _val_, _op_, _col_, _val_	_sel_aggcol_j2_three_cond
+select: _cols_, from: _table_, _table_ with join cond, where: _op_, _col_, _val_, _op_, _col_, _val_, _op_, _col_, _val_	_sel_cols_j2_three_cond
+select: _cols_, from: _table_, _table_ with join cond, where: _op_, _col_, _val_, groupby: _cols_, having: _op_, _agg_ _col_, _val_	_sel_cols_j2_whr_cond_groupby_having
+select: _agg_ _col_, _col_, from: _table_, _table_ with join cond, where: _op_, _col_, _val_, groupby: _cols_	_sel_aggcol_col_j2_whr_cond_groupby
+select: _cols_, from: _table_, where: _op_, _col_, select: _cols_, from: _table_, where: _op_, _col_, select: _agg_ _col_, from: _table_	_sel_cols_whr_nested_whr_nested_agg
+select: _cols_, from: _table_, where: _op_, _col_, select: _agg_ _col_, from: _table_, where: _op_, _col_, select: _cols_, from: _table_, where: _op_, _col_, _val_, _op_, _col_, select: _cols_, from: _table_, where: _op_, _col_, _val_	_sel_cols_whr_nested_aggcol_nested_nested
+select: _agg_ _col_, _col_, from: _table_, _table_ with join cond, where: _op_, _col_, _val_, groupby: _cols_, orderby: _agg_ _col_	_sel_aggcol_col_j2_whr_cond_groupby_orderby_agg
+select: _cols_, from: _table_, _table_ with join cond, where: _op_, _col_, _val_, _op_, _col_, _val_, _op_, _col_, _val_, _op_, _col_, _val_	_sel_cols_j2_whr_four_conds
+select: _cols_, from: _table_, where: _op_, _col_, _val_, _op_, _col_, _val_, _op_, _col_, _val_	_sel_three_conds

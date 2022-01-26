@@ -7,6 +7,14 @@ Ahmed Elgohary, Christopher Meek, Matthew Richardson, Adam Fourney, Gonzalo Ramo
 NAACL 2021.
 
 ![Example](nledit.png)
+
+## Setup
+
+conda create -n nledit python=3.7
+
+Install: nltk, numpy, attrs
+
+
 ## Citation
  
 ```
