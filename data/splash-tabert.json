@@ -1,0 +1,1871 @@
+[
+    {
+        "question": "What is the average and the maximum capacity of all stadiums?",
+        "db_id": "concert_singer",
+        "gold_parse": "SELECT avg(capacity) ,  max(capacity) FROM stadium",
+        "predicted_parse": "SELECT Avg ( average ) , Max ( capacity ) FROM stadium",
+        "feedback": "Supplant average with capacity"
+    },
+    {
+        "question": "What is the average and maximum capacities for all stations?",
+        "db_id": "concert_singer",
+        "gold_parse": "SELECT avg(capacity) ,  max(capacity) FROM stadium",
+        "predicted_parse": "SELECT Avg ( average ) , Max ( capacity ) FROM stadium",
+        "feedback": "Insufficient data to answer given question."
+    },
+    {
+        "question": "What is the name and capacity for the stadium with highest average attendance?",
+        "db_id": "concert_singer",
+        "gold_parse": "SELECT name ,  capacity FROM stadium ORDER BY average DESC LIMIT 1",
+        "predicted_parse": "SELECT name , capacity FROM stadium GROUP BY name ORDER BY Avg ( average ) DESC LIMIT 0",
+        "feedback": "remove step 1 and just use average in setp 2"
+    },
+    {
+        "question": "What is the name and capacity for the stadium with the highest average attendance?",
+        "db_id": "concert_singer",
+        "gold_parse": "SELECT name ,  capacity FROM stadium ORDER BY average DESC LIMIT 1",
+        "predicted_parse": "SELECT name , capacity FROM stadium GROUP BY name ORDER BY Avg ( average ) DESC LIMIT 0",
+        "feedback": "remove step 1 and in step 2 find stadium with largest average"
+    },
+    {
+        "question": "What is the name and capacity of the stadium  with the most concerts after 2013?",
+        "db_id": "concert_singer",
+        "gold_parse": "SELECT T2.name ,  T2.capacity FROM concert AS T1 JOIN stadium AS T2 ON T1.stadium_id  =  T2.stadium_id WHERE T1.year  >=  2014 GROUP BY T2.stadium_id ORDER BY count(*) DESC LIMIT 1",
+        "predicted_parse": "SELECT T1.name , T1.capacity FROM stadium AS T1 JOIN concert AS T2 ON T1.stadium_id = T2.stadium_id WHERE T2.year > ' value ' GROUP BY T1.stadium_id ORDER BY Count ( * ) DESC LIMIT 0",
+        "feedback": "In step 2 , Replace  ' 1 ' with  '20 1 3 '.In step 3 Replace stadium 's stadium id with concert 's stadium id"
+    },
+    {
+        "question": "Which year has most number of concerts?",
+        "db_id": "concert_singer",
+        "gold_parse": "SELECT YEAR FROM concert GROUP BY YEAR ORDER BY count(*) DESC LIMIT 1",
+        "predicted_parse": "SELECT T1.year FROM concert AS T1 JOIN singer_in_concert AS T2 ON T1.concert_id = T2.concert_id GROUP BY T1.year ORDER BY Count ( * ) DESC LIMIT 0",
+        "feedback": "In step 3 ensure to find on;y for the largest value of results of step 2."
+    },
+    {
+        "question": "What are the names of all stadiums that did not have a concert in 2014?",
+        "db_id": "concert_singer",
+        "gold_parse": "SELECT name FROM stadium EXCEPT SELECT T2.name FROM concert AS T1 JOIN stadium AS T2 ON T1.stadium_id  =  T2.stadium_id WHERE T1.year  =  2014",
+        "predicted_parse": "SELECT T1.name FROM stadium AS T1 EXCEPT SELECT T1.name FROM stadium AS T1 JOIN concert AS T2 ON T1.stadium_id = T2.stadium_id WHERE T2.year > = ' value '",
+        "feedback": "Remove \"greater than or\" phrase in step 3"
+    },
+    {
+        "question": "How much does the youngest dog weigh?",
+        "db_id": "pets_1",
+        "gold_parse": "SELECT weight FROM pets ORDER BY pet_age LIMIT 1",
+        "predicted_parse": "SELECT weight FROM pets ORDER BY weight ASC LIMIT 0",
+        "feedback": "Find weight whose pet age value is lowest."
+    },
+    {
+        "question": "Find the number of dog pets that are raised by female students (with sex F).",
+        "db_id": "pets_1",
+        "gold_parse": "SELECT count(*) FROM student AS T1 JOIN has_pet AS T2 ON T1.stuid  =  T2.stuid JOIN pets AS T3 ON T2.petid  =  T3.petid WHERE T1.sex  =  'F' AND T3.pettype  =  'dog'",
+        "predicted_parse": "SELECT Count ( * ) FROM pets AS T1 JOIN has_pet AS T2 ON T1.petid = T2.petid JOIN student AS T3 ON T2.stuid = T3.stuid WHERE T3.sex = ' value ' AND T3.sex = ' value '",
+        "feedback": "In step 2 , Swap 2nd sex with pet type"
+    },
+    {
+        "question": "How many dog pets are raised by female students?",
+        "db_id": "pets_1",
+        "gold_parse": "SELECT count(*) FROM student AS T1 JOIN has_pet AS T2 ON T1.stuid  =  T2.stuid JOIN pets AS T3 ON T2.petid  =  T3.petid WHERE T1.sex  =  'F' AND T3.pettype  =  'dog'",
+        "predicted_parse": "SELECT Count ( * ) FROM pets AS T1 JOIN has_pet AS T2 ON T1.petid = T2.petid JOIN student AS T3 ON T2.stuid = T3.stuid WHERE T3.sex = ' value ' AND T3.sex = ' value '",
+        "feedback": "In step 2 Supersede sex equals dog\" with pet type equals dog\"."
+    },
+    {
+        "question": "Find the name of students who have both cat and dog pets.",
+        "db_id": "pets_1",
+        "gold_parse": "SELECT T1.Fname FROM student AS T1 JOIN has_pet AS T2 ON T1.stuid  =  T2.stuid JOIN pets AS T3 ON T3.petid  =  T2.petid WHERE T3.pettype  =  'cat' INTERSECT SELECT T1.Fname FROM student AS T1 JOIN has_pet AS T2 ON T1.stuid  =  T2.stuid JOIN pets AS T3 ON T3.petid  =  T2.petid WHERE T3.pettype  =  'dog'",
+        "predicted_parse": "SELECT T1.fname FROM student AS T1 JOIN has_pet AS T2 ON T1.stuid = T2.stuid JOIN pets AS T3 ON T2.petid = T3.petid WHERE T3.pettype = ' value ' INTERSECT SELECT T1.lname FROM student AS T1 JOIN has_pet AS T2 ON T1.stuid = T2.stuid JOIN pets AS T3 ON T2.petid = T3.petid WHERE T3.pettype = ' value '",
+        "feedback": "In step 3 , Supplant first name in place of last name"
+    },
+    {
+        "question": "Find the first name and age of students who have a dog but do not have a cat as a pet.",
+        "db_id": "pets_1",
+        "gold_parse": "SELECT T1.fname ,  T1.age FROM student AS T1 JOIN has_pet AS T2 ON T1.stuid  =  T2.stuid JOIN pets AS T3 ON T3.petid  =  T2.petid WHERE T3.pettype  =  'dog' AND T1.stuid NOT IN (SELECT T1.stuid FROM student AS T1 JOIN has_pet AS T2 ON T1.stuid  =  T2.stuid JOIN pets AS T3 ON T3.petid  =  T2.petid WHERE T3.pettype  =  'cat')",
+        "predicted_parse": "SELECT T1.fname , T1.age FROM student AS T1 JOIN has_pet AS T2 ON T1.stuid = T2.stuid JOIN pets AS T3 ON T2.petid = T3.petid WHERE T3.pettype = ' value ' EXCEPT SELECT T2.stuid , T1.age FROM student AS T1 JOIN has_pet AS T2 ON T1.stuid = T2.stuid JOIN pets AS T3 ON T2.petid = T3.petid WHERE T3.pettype = ' value '",
+        "feedback": "In Step 3 , Switch student id with first name In Step 4 Interchange 2 and 3."
+    },
+    {
+        "question": "What is the first name of every student who has a dog but does not have a cat?",
+        "db_id": "pets_1",
+        "gold_parse": "SELECT T1.fname ,  T1.age FROM student AS T1 JOIN has_pet AS T2 ON T1.stuid  =  T2.stuid JOIN pets AS T3 ON T3.petid  =  T2.petid WHERE T3.pettype  =  'dog' AND T1.stuid NOT IN (SELECT T1.stuid FROM student AS T1 JOIN has_pet AS T2 ON T1.stuid  =  T2.stuid JOIN pets AS T3 ON T3.petid  =  T2.petid WHERE T3.pettype  =  'cat')",
+        "predicted_parse": "SELECT T1.fname FROM student AS T1 JOIN has_pet AS T2 ON T1.stuid = T2.stuid JOIN pets AS T3 ON T2.petid = T3.petid WHERE T3.pettype = ' value ' EXCEPT SELECT T1.fname FROM student AS T1 JOIN has_pet AS T2 ON T1.stuid = T2.stuid JOIN pets AS T3 ON T2.petid = T3.petid WHERE T3.pettype = ' value '",
+        "feedback": "In step 4 , Interchange the values \"step 2\" and \"step 3\"."
+    },
+    {
+        "question": "Find the average and maximum age for each type of pet.",
+        "db_id": "pets_1",
+        "gold_parse": "SELECT avg(pet_age) ,  max(pet_age) ,  pettype FROM pets GROUP BY pettype",
+        "predicted_parse": "SELECT Avg ( pet_age ) , Max ( pet_age ) , Max ( pet_age ) FROM pets",
+        "feedback": "Find maximum pet age only once and make sure to find for each different pet type"
+    },
+    {
+        "question": "Find the first name and age of students who have a pet.",
+        "db_id": "pets_1",
+        "gold_parse": "SELECT DISTINCT T1.fname ,  T1.age FROM student AS T1 JOIN has_pet AS T2 ON T1.stuid  =  T2.stuid",
+        "predicted_parse": "SELECT DISTINCT T1.fname , T1.age FROM student AS T1 JOIN has_pet AS T2 ON T1.stuid = T2.stuid JOIN pets AS T3 ON T2.petid = T3.petid",
+        "feedback": "In step 2 , Find only for whose student id is in has pet table."
+    },
+    {
+        "question": "What are the different first names and ages of the students who do have pets?",
+        "db_id": "pets_1",
+        "gold_parse": "SELECT DISTINCT T1.fname ,  T1.age FROM student AS T1 JOIN has_pet AS T2 ON T1.stuid  =  T2.stuid",
+        "predicted_parse": "SELECT DISTINCT T1.fname , T1.age FROM student AS T1 JOIN has_pet AS T2 ON T1.stuid = T2.stuid JOIN pets AS T3 ON T2.petid = T3.petid WHERE T3.pettype LIKE ' value '",
+        "feedback": "Remove pet type contains cat\" phrase."
+    },
+    {
+        "question": "For students who have pets, how many pets does each student have?",
+        "db_id": "pets_1",
+        "gold_parse": "SELECT count(*) ,  T1.stuid FROM student AS T1 JOIN has_pet AS T2 ON T1.stuid  =  T2.stuid GROUP BY T1.stuid",
+        "predicted_parse": "SELECT Count ( * ) , T1.stuid FROM has_pet AS T1 JOIN pets AS T2 ON T1.petid = T2.petid WHERE T2.pettype ! = ' value ' GROUP BY T1.stuid",
+        "feedback": "No need of step 2."
+    },
+    {
+        "question": "Find the last name of the student who has a cat that is age 3.",
+        "db_id": "pets_1",
+        "gold_parse": "SELECT T1.lname FROM student AS T1 JOIN has_pet AS T2 ON T1.stuid  =  T2.stuid JOIN pets AS T3 ON T3.petid  =  T2.petid WHERE T3.pet_age  =  3 AND T3.pettype  =  'cat'",
+        "predicted_parse": "SELECT T1.lname FROM student AS T1 JOIN has_pet AS T2 ON T1.stuid = T2.stuid JOIN pets AS T3 ON T2.petid = T3.petid WHERE T3.pettype = ' value ' AND T3.pettype = ' value '",
+        "feedback": "Interchange second pet type with pet age in step 2."
+    },
+    {
+        "question": "What is the last name of the student who has a cat that is 3 years old?",
+        "db_id": "pets_1",
+        "gold_parse": "SELECT T1.lname FROM student AS T1 JOIN has_pet AS T2 ON T1.stuid  =  T2.stuid JOIN pets AS T3 ON T3.petid  =  T2.petid WHERE T3.pet_age  =  3 AND T3.pettype  =  'cat'",
+        "predicted_parse": "SELECT T1.lname FROM student AS T1 JOIN has_pet AS T2 ON T1.stuid = T2.stuid JOIN pets AS T3 ON T2.petid = T3.petid WHERE T3.pettype = ' value ' AND T3.pettype = ' value '",
+        "feedback": "Replace second pet type with pet age in step 2."
+    },
+    {
+        "question": "What is the full name of each car maker, along with its id and how many models it produces?",
+        "db_id": "car_1",
+        "gold_parse": "SELECT T1.FullName ,  T1.Id ,  count(*) FROM CAR_MAKERS AS T1 JOIN MODEL_LIST AS T2 ON T1.Id  =  T2.Maker GROUP BY T1.Id",
+        "predicted_parse": "SELECT T1.fullname , T1.maker , Count ( * ) FROM car_makers AS T1 JOIN model_list AS T2 ON T1.id = T2.maker GROUP BY T1.id",
+        "feedback": "In step 2 , Substitute car makers 's maker with model list 's Model\"."
+    },
+    {
+        "question": "Find the name of the makers that produced some cars in the year of 1970?",
+        "db_id": "car_1",
+        "gold_parse": "SELECT DISTINCT T1.Maker FROM CAR_MAKERS AS T1 JOIN MODEL_LIST AS T2 ON T1.Id  =  T2.Maker JOIN CAR_NAMES AS T3 ON T2.model  =  T3.model JOIN CARS_DATA AS T4 ON T3.MakeId  =  T4.id WHERE T4.year  =  '1970'",
+        "predicted_parse": "SELECT T1.maker FROM car_makers AS T1 JOIN cars_data AS T2 ON T1.id = T2.id WHERE T2.year = ' value '",
+        "feedback": "maker sure to avoid repetitionin step 2"
+    },
+    {
+        "question": "What is the name of the different car makers who produced a car in 1970?",
+        "db_id": "car_1",
+        "gold_parse": "SELECT DISTINCT T1.Maker FROM CAR_MAKERS AS T1 JOIN MODEL_LIST AS T2 ON T1.Id  =  T2.Maker JOIN CAR_NAMES AS T3 ON T2.model  =  T3.model JOIN CARS_DATA AS T4 ON T3.MakeId  =  T4.id WHERE T4.year  =  '1970'",
+        "predicted_parse": "SELECT DISTINCT T1.maker FROM car_makers AS T1 JOIN cars_data AS T2 ON T1.id = T2.id WHERE T2.year = ' value '",
+        "feedback": "need to use the tables model list and car names in step 1"
+    },
+    {
+        "question": "Find the make and production time of the cars that were produced in the earliest year?",
+        "db_id": "car_1",
+        "gold_parse": "SELECT T2.Make ,  T1.Year FROM CARS_DATA AS T1 JOIN CAR_NAMES AS T2 ON T1.Id  =  T2.MakeId WHERE T1.Year  =  (SELECT min(YEAR) FROM CARS_DATA)",
+        "predicted_parse": "SELECT T1.make , T2.year FROM car_names AS T1 JOIN cars_data AS T2 ON T1.makeid = T2.id ORDER BY T2.year ASC LIMIT 0",
+        "feedback": "step 2 should find maker and year with smallest value of year"
+    },
+    {
+        "question": "Which of the countries has the most car makers? List the country name.",
+        "db_id": "car_1",
+        "gold_parse": "SELECT T2.CountryName FROM CAR_MAKERS AS T1 JOIN COUNTRIES AS T2 ON T1.Country  =  T2.CountryId GROUP BY T1.Country ORDER BY Count(*) DESC LIMIT 1",
+        "predicted_parse": "SELECT T1.countryname FROM countries AS T1 JOIN car_makers AS T2 ON T1.countryid = T2.country GROUP BY T1.countryname ORDER BY Count ( * ) DESC LIMIT 0",
+        "feedback": "Replace country name with country id in step 2; Only find first row of descending order in step 3."
+    },
+    {
+        "question": "What is the name of the country with the most car makers?",
+        "db_id": "car_1",
+        "gold_parse": "SELECT T2.CountryName FROM CAR_MAKERS AS T1 JOIN COUNTRIES AS T2 ON T1.Country  =  T2.CountryId GROUP BY T1.Country ORDER BY Count(*) DESC LIMIT 1",
+        "predicted_parse": "SELECT T1.countryname FROM countries AS T1 JOIN car_makers AS T2 ON T1.countryid = T2.country GROUP BY T1.countryname ORDER BY Count ( * ) DESC LIMIT 0",
+        "feedback": "Supersede country name with Country(step 2); Show for top most row of descending order of step 2 's results(step 3)"
+    },
+    {
+        "question": "How many car models are produced by each maker? List the count and the maker full name.",
+        "db_id": "car_1",
+        "gold_parse": "SELECT Count(*) ,  T2.FullName ,  T2.id FROM MODEL_LIST AS T1 JOIN CAR_MAKERS AS T2 ON T1.Maker  =  T2.Id GROUP BY T2.id",
+        "predicted_parse": "SELECT Count ( * ) , T2.maker FROM model_list AS T1 JOIN car_makers AS T2 ON T1.maker = T2.id GROUP BY T2.maker",
+        "feedback": "replace maker with full name in step 2"
+    },
+    {
+        "question": "What is the number of car models that are produced by each maker and what is the id and full name of each maker?",
+        "db_id": "car_1",
+        "gold_parse": "SELECT Count(*) ,  T2.FullName ,  T2.id FROM MODEL_LIST AS T1 JOIN CAR_MAKERS AS T2 ON T1.Maker  =  T2.Id GROUP BY T2.id",
+        "predicted_parse": "SELECT Count ( * ) , T2.maker FROM model_list AS T1 JOIN car_makers AS T2 ON T1.maker = T2.id GROUP BY T2.maker",
+        "feedback": "Also need to find id in step 2 ahead of car makers 's maker"
+    },
+    {
+        "question": "What is the accelerate of the car make amc hornet sportabout (sw)?",
+        "db_id": "car_1",
+        "gold_parse": "SELECT T1.Accelerate FROM CARS_DATA AS T1 JOIN CAR_NAMES AS T2 ON T1.Id  =  T2.MakeId WHERE T2.Make  =  'amc hornet sportabout (sw)'",
+        "predicted_parse": "SELECT T1.accelerate FROM cars_data AS T1 JOIN car_names AS T2 ON T1.id = T2.makeid WHERE T2.model = ' value '",
+        "feedback": "Supersede model with maker in step 2."
+    },
+    {
+        "question": "How much does the car accelerate that makes amc hornet sportabout (sw)?",
+        "db_id": "car_1",
+        "gold_parse": "SELECT T1.Accelerate FROM CARS_DATA AS T1 JOIN CAR_NAMES AS T2 ON T1.Id  =  T2.MakeId WHERE T2.Make  =  'amc hornet sportabout (sw)'",
+        "predicted_parse": "SELECT T1.accelerate FROM cars_data AS T1 JOIN car_names AS T2 ON T1.id = T2.makeid WHERE T2.model = ' value '",
+        "feedback": "use maker instead of model in step 2"
+    },
+    {
+        "question": "What is the average miles per gallon of all the cards with 4 cylinders?",
+        "db_id": "car_1",
+        "gold_parse": "SELECT avg(mpg) FROM CARS_DATA WHERE Cylinders  =  4",
+        "predicted_parse": "SELECT Avg ( weight ) FROM cars_data WHERE cylinders = ' value '",
+        "feedback": "Switch weight with mpg"
+    },
+    {
+        "question": "What is the smallest weight of the car produced with 8 cylinders on 1974?",
+        "db_id": "car_1",
+        "gold_parse": "SELECT Weight FROM CARS_DATA WHERE Cylinders  =  4 AND YEAR  =  1974 ORDER BY Weight ASC LIMIT 1",
+        "predicted_parse": "SELECT weight FROM cars_data WHERE cylinders = ' value ' AND year = ' value '",
+        "feedback": "Need to find minimum weight , swap \" 1\" with \" 8\" and \" 4\" with \" 197 4\"."
+    },
+    {
+        "question": "What is the minimu weight of the car with 8 cylinders produced in 1974?",
+        "db_id": "car_1",
+        "gold_parse": "SELECT Weight FROM CARS_DATA WHERE Cylinders  =  4 AND YEAR  =  1974 ORDER BY Weight ASC LIMIT 1",
+        "predicted_parse": "SELECT weight FROM cars_data WHERE cylinders = ' value ' AND year = ' value '",
+        "feedback": "Add \"minimum\" in front of weight , replace \" 1\" with \" 8\" and \" 4\" with 197 4\""
+    },
+    {
+        "question": "What are all the makers and models?",
+        "db_id": "car_1",
+        "gold_parse": "SELECT Maker ,  Model FROM MODEL_LIST",
+        "predicted_parse": "SELECT T1.maker , T3.model FROM car_makers AS T1 JOIN model_list AS T2 ON T1.id = T2.maker JOIN car_names AS T3 ON T2.model = T3.model",
+        "feedback": "In step 2 , find all maker and model without repetition."
+    },
+    {
+        "question": "What are the countries having at least one car maker? List name and id.",
+        "db_id": "car_1",
+        "gold_parse": "SELECT T1.CountryName ,  T1.CountryId FROM COUNTRIES AS T1 JOIN CAR_MAKERS AS T2 ON T1.CountryId  =  T2.Country GROUP BY T1.CountryId HAVING count(*)  >=  1",
+        "predicted_parse": "SELECT countryname , countryid FROM countries",
+        "feedback": "Assure that corresponding country id 's is present under car makers 's country"
+    },
+    {
+        "question": "What are the names and ids of all countries with at least one car maker?",
+        "db_id": "car_1",
+        "gold_parse": "SELECT T1.CountryName ,  T1.CountryId FROM COUNTRIES AS T1 JOIN CAR_MAKERS AS T2 ON T1.CountryId  =  T2.Country GROUP BY T1.CountryId HAVING count(*)  >=  1",
+        "predicted_parse": "SELECT DISTINCT countryname , countryid FROM countries",
+        "feedback": "Making certain that their corresponding id also present in car makers table."
+    },
+    {
+        "question": "What are the names of all European countries with at least 3 manufacturers?",
+        "db_id": "car_1",
+        "gold_parse": "SELECT T1.CountryName FROM COUNTRIES AS T1 JOIN CONTINENTS AS T2 ON T1.Continent  =  T2.ContId JOIN CAR_MAKERS AS T3 ON T1.CountryId  =  T3.Country WHERE T2.Continent  =  'europe' GROUP BY T1.CountryName HAVING count(*)  >=  3",
+        "predicted_parse": "SELECT T1.countryname FROM countries AS T1 JOIN car_makers AS T2 ON T1.countryid = T2.country WHERE T1.continent = ' value ' GROUP BY T1.countryname HAVING Count ( * ) > = ' value '",
+        "feedback": "Find countries 's country name whose corresponding continents 's continents equals Europe , and count of car makers 's country id equals 3."
+    },
+    {
+        "question": "What is the maximum horsepower and the make of the car models with 3 cylinders?",
+        "db_id": "car_1",
+        "gold_parse": "SELECT T2.horsepower ,  T1.Make FROM CAR_NAMES AS T1 JOIN CARS_DATA AS T2 ON T1.MakeId  =  T2.Id WHERE T2.cylinders  =  3 ORDER BY T2.horsepower DESC LIMIT 1",
+        "predicted_parse": "SELECT Max ( T1.horsepower ) , T2.make FROM cars_data AS T1 JOIN car_names AS T2 ON T1.id = T2.makeid WHERE T1.cylinders = ' value ' GROUP BY T2.make",
+        "feedback": "Change \" 1\" with \" 3\" in step 1."
+    },
+    {
+        "question": "What is the largest amount of horsepower for the models with 3 cylinders and what make is it?",
+        "db_id": "car_1",
+        "gold_parse": "SELECT T2.horsepower ,  T1.Make FROM CAR_NAMES AS T1 JOIN CARS_DATA AS T2 ON T1.MakeId  =  T2.Id WHERE T2.cylinders  =  3 ORDER BY T2.horsepower DESC LIMIT 1",
+        "predicted_parse": "SELECT Max ( T1.horsepower ) , T2.model FROM cars_data AS T1 JOIN car_names AS T2 ON T1.id = T2.makeid WHERE T1.cylinders = ' value ' GROUP BY T2.model",
+        "feedback": "Interchange \" 1\" with \" 3\" in step 2 and model with maker in step 3"
+    },
+    {
+        "question": "Which model saves the most gasoline? That is to say, have the maximum miles per gallon.",
+        "db_id": "car_1",
+        "gold_parse": "SELECT T1.Model FROM CAR_NAMES AS T1 JOIN CARS_DATA AS T2 ON T1.MakeId  =  T2.Id ORDER BY T2.mpg DESC LIMIT 1",
+        "predicted_parse": "SELECT T1.model FROM car_names AS T1 JOIN model_list AS T2 ON T1.model = T2.model GROUP BY T1.model ORDER BY Count ( * ) DESC LIMIT 0",
+        "feedback": "Find model list 's model whose corresponding cars data 's mpg value is highest."
+    },
+    {
+        "question": "What is the car wmodel with the highest mpg?",
+        "db_id": "car_1",
+        "gold_parse": "SELECT T1.Model FROM CAR_NAMES AS T1 JOIN CARS_DATA AS T2 ON T1.MakeId  =  T2.Id ORDER BY T2.mpg DESC LIMIT 1",
+        "predicted_parse": "SELECT mpg , mpg FROM cars_data ORDER BY mpg DESC LIMIT 0",
+        "feedback": "Swap first \"MPG\" with \"Corresponding maker of car names and remove second \"MPG\"."
+    },
+    {
+        "question": "What is the average edispl for all volvos?",
+        "db_id": "car_1",
+        "gold_parse": "SELECT avg(T2.edispl) FROM CAR_NAMES AS T1 JOIN CARS_DATA AS T2 ON T1.MakeId  =  T2.Id WHERE T1.Model  =  'volvo'",
+        "predicted_parse": "SELECT Avg ( edispl ) FROM cars_data",
+        "feedback": "Check for car names 's model equals volvos."
+    },
+    {
+        "question": "What is the maximum accelerate for all the different cylinders?",
+        "db_id": "car_1",
+        "gold_parse": "SELECT max(Accelerate) ,  Cylinders FROM CARS_DATA GROUP BY Cylinders",
+        "predicted_parse": "SELECT Max ( accelerate ) FROM cars_data",
+        "feedback": "Ensuring to find for each value of cylinders"
+    },
+    {
+        "question": "What model has the most different versions?",
+        "db_id": "car_1",
+        "gold_parse": "SELECT Model FROM CAR_NAMES GROUP BY Model ORDER BY count(*) DESC LIMIT 1",
+        "predicted_parse": "SELECT T1.model FROM car_names AS T1 JOIN model_list AS T2 ON T1.model = T2.model GROUP BY T1.model ORDER BY Count ( * ) DESC LIMIT 0",
+        "feedback": "In step 2 Supplant \"Model\" with \"Maker\"."
+    },
+    {
+        "question": "In 1980, how many cars were made?",
+        "db_id": "car_1",
+        "gold_parse": "SELECT count(*) FROM CARS_DATA WHERE YEAR  =  1980",
+        "predicted_parse": "SELECT Count ( * ) FROM car_names AS T1 JOIN cars_data AS T2 ON T1.makeid = T2.id WHERE T2.year = ' value '",
+        "feedback": "remove step 1 and use cars data only in step 2"
+    },
+    {
+        "question": "What is the number of car models created by the car maker American Motor Company?",
+        "db_id": "car_1",
+        "gold_parse": "SELECT count(*) FROM CAR_MAKERS AS T1 JOIN MODEL_LIST AS T2 ON T1.Id  =  T2.Maker WHERE T1.FullName  =  'American Motor Company'",
+        "predicted_parse": "SELECT Count ( * ) FROM model_list AS T1 JOIN car_makers AS T2 ON T1.maker = T2.id WHERE T2.maker = ' value '",
+        "feedback": "in step 2 use the full name"
+    },
+    {
+        "question": "Which distinctive models are produced by maker with the full name General Motors or weighing more than 3500?",
+        "db_id": "car_1",
+        "gold_parse": "SELECT DISTINCT T2.Model FROM CAR_NAMES AS T1 JOIN MODEL_LIST AS T2 ON T1.Model  =  T2.Model JOIN CAR_MAKERS AS T3 ON T2.Maker  =  T3.Id JOIN CARS_DATA AS T4 ON T1.MakeId  =  T4.Id WHERE T3.FullName  =  'General Motors' OR T4.weight  >  3500",
+        "predicted_parse": "SELECT DISTINCT T1.model FROM car_names AS T1 JOIN cars_data AS T2 ON T1.makeid = T2.id JOIN car_makers AS T3 ON T2.id = T3.id WHERE T3.fullname = ' value ' OR T2.weight > ' value '",
+        "feedback": "In step 1 , Supersede cars data table with model list table."
+    },
+    {
+        "question": "What are the different models created by either the car maker General Motors or weighed more than 3500?",
+        "db_id": "car_1",
+        "gold_parse": "SELECT DISTINCT T2.Model FROM CAR_NAMES AS T1 JOIN MODEL_LIST AS T2 ON T1.Model  =  T2.Model JOIN CAR_MAKERS AS T3 ON T2.Maker  =  T3.Id JOIN CARS_DATA AS T4 ON T1.MakeId  =  T4.Id WHERE T3.FullName  =  'General Motors' OR T4.weight  >  3500",
+        "predicted_parse": "SELECT DISTINCT T1.model FROM car_names AS T1 JOIN cars_data AS T2 ON T1.makeid = T2.id JOIN car_makers AS T3 ON T2.id = T3.id WHERE T3.maker = ' value ' OR T2.weight > ' value '",
+        "feedback": "use the full name of the maker"
+    },
+    {
+        "question": "Among the cars with more than lowest horsepower, which ones do not have more than 3 cylinders? List the car makeid and make name.",
+        "db_id": "car_1",
+        "gold_parse": "SELECT T2.MakeId ,  T2.Make FROM CARS_DATA AS T1 JOIN CAR_NAMES AS T2 ON T1.Id  =  T2.MakeId WHERE T1.Horsepower  >  (SELECT min(Horsepower) FROM CARS_DATA) AND T1.Cylinders  <=  3",
+        "predicted_parse": "SELECT T1.makeid , T1.make FROM car_names AS T1 JOIN cars_data AS T2 ON T1.makeid = T2.id WHERE T2.horsepower > ' value '",
+        "feedback": "Replace horsepower with cylinders and find for horsepower greater than smallest value of Horsepower(step 2)."
+    },
+    {
+        "question": "Among the cars that do not have the minimum horsepower, what are the make ids and names of al those with less than 4 cylinders?",
+        "db_id": "car_1",
+        "gold_parse": "SELECT T2.MakeId ,  T2.Make FROM CARS_DATA AS T1 JOIN CAR_NAMES AS T2 ON T1.Id  =  T2.MakeId WHERE T1.Horsepower  >  (SELECT min(Horsepower) FROM CARS_DATA) AND T1.Cylinders  <=  3",
+        "predicted_parse": "SELECT T1.makeid , T1.make FROM car_names AS T1 JOIN cars_data AS T2 ON T1.makeid = T2.id WHERE T2.horsepower < ( SELECT Min ( T2.horsepower ) FROM cars_data AS T2 )",
+        "feedback": "Supersede \"less than\" with \"greater than\" and also ensure cylinders less than 4."
+    },
+    {
+        "question": "What is the maximum miles per gallon of the car with 8 cylinders or produced before 1980?",
+        "db_id": "car_1",
+        "gold_parse": "SELECT mpg FROM CARS_DATA WHERE Cylinders  =  8 OR YEAR  <  1980 ORDER BY mpg DESC LIMIT 1",
+        "predicted_parse": "SELECT Max ( mpg ) FROM cars_data WHERE cylinders = ' value ' OR year < ' value '",
+        "feedback": "Change \" 1\" with \" 8\" and \" 8\" with \" 19 80\"."
+    },
+    {
+        "question": "What is the maximum mpg of the cars that had 8 cylinders or that were produced before 1980?",
+        "db_id": "car_1",
+        "gold_parse": "SELECT mpg FROM CARS_DATA WHERE Cylinders  =  8 OR YEAR  <  1980 ORDER BY mpg DESC LIMIT 1",
+        "predicted_parse": "SELECT Max ( mpg ) FROM cars_data WHERE cylinders = ' value ' OR year < ' value '",
+        "feedback": "Change \" 1\" to \" 8\" and \" 8\" to \" 19 80\"."
+    },
+    {
+        "question": "Which models are lighter than 3500 but not built by the 'Ford Motor Company'?",
+        "db_id": "car_1",
+        "gold_parse": "SELECT DISTINCT T1.model FROM MODEL_LIST AS T1 JOIN CAR_NAMES AS T2 ON T1.Model  =  T2.Model JOIN CARS_DATA AS T3 ON T2.MakeId  =  T3.Id JOIN CAR_MAKERS AS T4 ON T1.Maker  =  T4.Id WHERE T3.weight  <  3500 AND T4.FullName != 'Ford Motor Company'",
+        "predicted_parse": "SELECT T1.model FROM model_list AS T1 JOIN car_makers AS T2 ON T1.maker = T2.id JOIN cars_data AS T3 ON T2.id = T3.id WHERE T3.weight < ' value ' AND T2.maker = ' value '",
+        "feedback": "In step 2 , maker does not equal  'Ford Motor Company '."
+    },
+    {
+        "question": "What are the different models wthat are lighter than 3500 but were not built by the Ford Motor Company?",
+        "db_id": "car_1",
+        "gold_parse": "SELECT DISTINCT T1.model FROM MODEL_LIST AS T1 JOIN CAR_NAMES AS T2 ON T1.Model  =  T2.Model JOIN CARS_DATA AS T3 ON T2.MakeId  =  T3.Id JOIN CAR_MAKERS AS T4 ON T1.Maker  =  T4.Id WHERE T3.weight  <  3500 AND T4.FullName != 'Ford Motor Company'",
+        "predicted_parse": "SELECT DISTINCT T1.model FROM model_list AS T1 JOIN car_makers AS T2 ON T1.maker = T2.id JOIN cars_data AS T3 ON T2.id = T3.id WHERE T3.weight > ' value ' AND T2.maker = ' value '",
+        "feedback": "In step 2 , Switch \"greater than\" with \"less than\" and \"Maker\" with \"FullName\"."
+    },
+    {
+        "question": "What are the ids and makers of all car makers that produce at least 2 models and make more than 3 cars?",
+        "db_id": "car_1",
+        "gold_parse": "SELECT T1.Id ,  T1.Maker FROM CAR_MAKERS AS T1 JOIN MODEL_LIST AS T2 ON T1.Id  =  T2.Maker GROUP BY T1.Id HAVING count(*)  >=  2 INTERSECT SELECT T1.Id ,  T1.Maker FROM CAR_MAKERS AS T1 JOIN MODEL_LIST AS T2 ON T1.Id  =  T2.Maker JOIN CAR_NAMES AS T3 ON T2.model  =  T3.model GROUP BY T1.Id HAVING count(*)  >  3",
+        "predicted_parse": "SELECT T1.id , T1.maker FROM car_makers AS T1 JOIN model_list AS T2 ON T1.id = T2.maker GROUP BY T1.id HAVING Count ( * ) > = ' value ' INTERSECT SELECT T1.id , T1.maker FROM car_makers AS T1 GROUP BY T1.id HAVING Count ( * ) > ' value '",
+        "feedback": "In step 4 replace \"Id in car makers table\" with \"corresponding make id in car names"
+    },
+    {
+        "question": "Which airline has abbreviation 'UAL'?",
+        "db_id": "flight_2",
+        "gold_parse": "SELECT Airline FROM AIRLINES WHERE Abbreviation  =  \"UAL\"",
+        "predicted_parse": "SELECT airline FROM airlines WHERE abbreviation LIKE ' value '",
+        "feedback": "Changer \"contains\" with \"equals\"."
+    },
+    {
+        "question": "Give the airline with abbreviation 'UAL'.",
+        "db_id": "flight_2",
+        "gold_parse": "SELECT Airline FROM AIRLINES WHERE Abbreviation  =  \"UAL\"",
+        "predicted_parse": "SELECT airline FROM airlines WHERE abbreviation LIKE ' value '",
+        "feedback": "Substitute \"contains\" with \"equals\"."
+    },
+    {
+        "question": "What is the airport name for airport 'AKO'?",
+        "db_id": "flight_2",
+        "gold_parse": "SELECT AirportName FROM AIRPORTS WHERE AirportCode  =  \"AKO\"",
+        "predicted_parse": "SELECT airportname FROM airports WHERE city = ' value '",
+        "feedback": "Exchange \"City\" with airport code"
+    },
+    {
+        "question": "How many flights depart from City 'Aberdeen' and have destination City 'Ashley'?",
+        "db_id": "flight_2",
+        "gold_parse": "SELECT count(*) FROM FLIGHTS AS T1 JOIN AIRPORTS AS T2 ON T1.DestAirport  =  T2.AirportCode JOIN AIRPORTS AS T3 ON T1.SourceAirport  =  T3.AirportCode WHERE T2.City  =  \"Ashley\" AND T3.City  =  \"Aberdeen\"",
+        "predicted_parse": "SELECT Count ( * ) FROM flights AS T1 JOIN airports AS T2 ON T1.sourceairport = T2.airportcode WHERE T2.city = ' value ' AND T1.destairport = ' value '",
+        "feedback": "In Step 2 Verify source airport is code of Aberdeen and destination airport code of Ashley."
+    },
+    {
+        "question": "How many flights fly from Aberdeen to Ashley?",
+        "db_id": "flight_2",
+        "gold_parse": "SELECT count(*) FROM FLIGHTS AS T1 JOIN AIRPORTS AS T2 ON T1.DestAirport  =  T2.AirportCode JOIN AIRPORTS AS T3 ON T1.SourceAirport  =  T3.AirportCode WHERE T2.City  =  \"Ashley\" AND T3.City  =  \"Aberdeen\"",
+        "predicted_parse": "SELECT Count ( * ) FROM flights AS T1 JOIN airports AS T2 ON T1.sourceairport = T2.airportcode WHERE T2.city = ' value ' AND T1.destairport = ' value '",
+        "feedback": "Step 2 , Find for which source airport code is of Aberdeen and destination airport code is of Ashley."
+    },
+    {
+        "question": "Count the number of United Airlines flights arriving in ASY Airport.",
+        "db_id": "flight_2",
+        "gold_parse": "SELECT count(*) FROM AIRLINES AS T1 JOIN FLIGHTS AS T2 ON T2.Airline  =  T1.uid WHERE T1.Airline  =  \"United Airlines\" AND T2.DestAirport  =  \"ASY\"",
+        "predicted_parse": "SELECT Count ( * ) FROM flights WHERE sourceairport = ' value '",
+        "feedback": "Swap source airport equals United airlines with destination airport equals ASY\" ensuring corresponding airlines is \"United airlines"
+    },
+    {
+        "question": "Return the number of United Airlines flights leaving from AHD Airport.",
+        "db_id": "flight_2",
+        "gold_parse": "SELECT count(*) FROM AIRLINES AS T1 JOIN FLIGHTS AS T2 ON T2.Airline  =  T1.uid WHERE T1.Airline  =  \"United Airlines\" AND T2.SourceAirport  =  \"AHD\"",
+        "predicted_parse": "SELECT Count ( * ) FROM flights WHERE destairport = ' value '",
+        "feedback": "Count rows in flights table where source airport is AHD and corresponding airlines is United airlines"
+    },
+    {
+        "question": "How many United Airlines flights go to City 'Aberdeen'?",
+        "db_id": "flight_2",
+        "gold_parse": "SELECT count(*) FROM FLIGHTS AS T1 JOIN AIRPORTS AS T2 ON T1.DestAirport  =  T2.AirportCode JOIN AIRLINES AS T3 ON T3.uid  =  T1.Airline WHERE T2.City  =  \"Aberdeen\" AND T3.Airline  =  \"United Airlines\"",
+        "predicted_parse": "SELECT Count ( * ) FROM flights AS T1 JOIN airports AS T2 ON T1.sourceairport = T2.airportcode WHERE T2.city = ' value '",
+        "feedback": "Step 1 , Exchange airports with \"airlines\". step 2 Exchange \"City\" with destination airport , Ensure airlines is \"United airlines"
+    },
+    {
+        "question": "Find the abbreviation and country of the airline that has fewest number of flights?",
+        "db_id": "flight_2",
+        "gold_parse": "SELECT T1.Abbreviation ,  T1.Country FROM AIRLINES AS T1 JOIN FLIGHTS AS T2 ON T1.uid  =  T2.Airline GROUP BY T1.Airline ORDER BY count(*) LIMIT 1",
+        "predicted_parse": "SELECT T1.abbreviation , T1.country FROM airlines AS T1 JOIN flights AS T2 ON T1.airline = T2.airline GROUP BY T1.uid ORDER BY Count ( * ) ASC LIMIT 0",
+        "feedback": "in the last setp find only the first result after ordering"
+    },
+    {
+        "question": "What is the abbreviation of the airilne has the fewest flights and what country is it in?",
+        "db_id": "flight_2",
+        "gold_parse": "SELECT T1.Abbreviation ,  T1.Country FROM AIRLINES AS T1 JOIN FLIGHTS AS T2 ON T1.uid  =  T2.Airline GROUP BY T1.Airline ORDER BY count(*) LIMIT 1",
+        "predicted_parse": "SELECT T1.abbreviation , T1.country FROM airlines AS T1 JOIN flights AS T2 ON T1.airline = T2.airline GROUP BY T1.uid ORDER BY Count ( * ) ASC LIMIT 0",
+        "feedback": "In step 3 only ensure to find for smallest value of step 2 's results , no ordering."
+    },
+    {
+        "question": "Find the name of airports which do not have any flight in and out.",
+        "db_id": "flight_2",
+        "gold_parse": "SELECT AirportName FROM Airports WHERE AirportCode NOT IN (SELECT SourceAirport FROM Flights UNION SELECT DestAirport FROM Flights)",
+        "predicted_parse": "SELECT T1.airportname FROM airports AS T1 WHERE T1.airportcode NOT IN ( SELECT T2.destairport FROM flights AS T2 )",
+        "feedback": "Also find source airport in step 1 ahead of destination airport"
+    },
+    {
+        "question": "Which airports do not have departing or arriving flights?",
+        "db_id": "flight_2",
+        "gold_parse": "SELECT AirportName FROM Airports WHERE AirportCode NOT IN (SELECT SourceAirport FROM Flights UNION SELECT DestAirport FROM Flights)",
+        "predicted_parse": "SELECT airportname FROM airports EXCEPT SELECT airportname FROM airports",
+        "feedback": "In step 2 find for those whose corresponding airport code present in flights 's source airport or destination airport"
+    },
+    {
+        "question": "Which cities do more than one employee under age 30 come from?",
+        "db_id": "employee_hire_evaluation",
+        "gold_parse": "SELECT city FROM employee WHERE age  <  30 GROUP BY city HAVING count(*)  >  1",
+        "predicted_parse": "SELECT city FROM employee GROUP BY city HAVING Count ( * ) > ' value '",
+        "feedback": "In step 2 change \" 30\" with \" 1\" and find for those whose age less than 30."
+    },
+    {
+        "question": "Find the manager name and district of the shop whose number of products is the largest.",
+        "db_id": "employee_hire_evaluation",
+        "gold_parse": "SELECT manager_name ,  district FROM shop ORDER BY number_products DESC LIMIT 1",
+        "predicted_parse": "SELECT manager_name , district FROM shop GROUP BY manager_name ORDER BY Count ( * ) DESC LIMIT 0",
+        "feedback": "Step 1 , find number products of shop table in place of manager name and number of rows."
+    },
+    {
+        "question": "What are the manager name and district of the shop that sells the largest number of products?",
+        "db_id": "employee_hire_evaluation",
+        "gold_parse": "SELECT manager_name ,  district FROM shop ORDER BY number_products DESC LIMIT 1",
+        "predicted_parse": "SELECT manager_name , district FROM shop GROUP BY manager_name ORDER BY Count ( * ) DESC LIMIT 0",
+        "feedback": "In step 1 , Substitute \"number of rows\" with \"Summation of number products of shop table\"."
+    },
+    {
+        "question": "Sort all the shops by number products in descending order, and return the name, location and district of each shop.",
+        "db_id": "employee_hire_evaluation",
+        "gold_parse": "SELECT name ,  LOCATION ,  district FROM shop ORDER BY number_products DESC",
+        "predicted_parse": "SELECT name , location , district FROM shop GROUP BY name ORDER BY Count ( * ) DESC",
+        "feedback": "In step 1 find number products of shop table."
+    },
+    {
+        "question": "find the name of employee who was awarded the most times in the evaluation.",
+        "db_id": "employee_hire_evaluation",
+        "gold_parse": "SELECT t1.name FROM employee AS t1 JOIN evaluation AS t2 ON t1.Employee_ID  =  t2.Employee_ID GROUP BY t2.Employee_ID ORDER BY count(*) DESC LIMIT 1",
+        "predicted_parse": "SELECT T1.name FROM employee AS T1 JOIN evaluation AS T2 ON T1.employee_id = T2.employee_id GROUP BY T1.name ORDER BY Count ( * ) DESC LIMIT 0",
+        "feedback": "in step 3 find top result after ordering"
+    },
+    {
+        "question": "Which employee received the most awards in evaluations? Give me the employee name.",
+        "db_id": "employee_hire_evaluation",
+        "gold_parse": "SELECT t1.name FROM employee AS t1 JOIN evaluation AS t2 ON t1.Employee_ID  =  t2.Employee_ID GROUP BY t2.Employee_ID ORDER BY count(*) DESC LIMIT 1",
+        "predicted_parse": "SELECT T1.name FROM employee AS T1 JOIN evaluation AS T2 ON T1.employee_id = T2.employee_id GROUP BY T1.name ORDER BY Count ( * ) DESC LIMIT 0",
+        "feedback": "Swap name with Employee ID(step 2); Only find for first row of descending order of step 2 's results(step 3)."
+    },
+    {
+        "question": "What is the name of the shop that is hiring the largest number of employees?",
+        "db_id": "employee_hire_evaluation",
+        "gold_parse": "SELECT t2.name FROM hiring AS t1 JOIN shop AS t2 ON t1.shop_id  =  t2.shop_id GROUP BY t1.shop_id ORDER BY count(*) DESC LIMIT 1",
+        "predicted_parse": "SELECT T1.name FROM shop AS T1 JOIN hiring AS T2 ON T1.shop_id = T2.shop_id GROUP BY T1.name ORDER BY Count ( * ) DESC LIMIT 0",
+        "feedback": "in step 3 find name with largest result in step 2"
+    },
+    {
+        "question": "Which shop has the most employees? Give me the shop name.",
+        "db_id": "employee_hire_evaluation",
+        "gold_parse": "SELECT t2.name FROM hiring AS t1 JOIN shop AS t2 ON t1.shop_id  =  t2.shop_id GROUP BY t1.shop_id ORDER BY count(*) DESC LIMIT 1",
+        "predicted_parse": "SELECT T1.name FROM shop AS T1 JOIN hiring AS T2 ON T1.shop_id = T2.shop_id GROUP BY T1.name ORDER BY Count ( * ) DESC LIMIT 0",
+        "feedback": "In step 2 , Substitute shop id in place of name"
+    },
+    {
+        "question": "What is the version number and template type code for the template with version number later than 5?",
+        "db_id": "cre_Doc_Template_Mgt",
+        "gold_parse": "SELECT version_number ,  template_type_code FROM Templates WHERE version_number  >  5",
+        "predicted_parse": "SELECT T1.template_type_code , T2.template_type_code FROM ref_template_types AS T1 JOIN templates AS T2 ON T1.template_type_code = T2.template_type_code WHERE T2.version_number > ' value '",
+        "feedback": "In step 2 , Substitute templates 's template type code with templates 's version number"
+    },
+    {
+        "question": "What the smallest version number and its template type code?",
+        "db_id": "cre_Doc_Template_Mgt",
+        "gold_parse": "SELECT min(Version_Number) ,  template_type_code FROM Templates",
+        "predicted_parse": "SELECT version_number , template_type_code FROM templates ORDER BY version_number ASC",
+        "feedback": "Ensure to only find for whose version number is smallest , no need of ascending order."
+    },
+    {
+        "question": "Return the lowest version number, along with its corresponding template type code.",
+        "db_id": "cre_Doc_Template_Mgt",
+        "gold_parse": "SELECT min(Version_Number) ,  template_type_code FROM Templates",
+        "predicted_parse": "SELECT version_number , template_type_code FROM templates ORDER BY version_number ASC LIMIT 0",
+        "feedback": "it should smallest version number"
+    },
+    {
+        "question": "Show all template type codes that are not used by any document.",
+        "db_id": "cre_Doc_Template_Mgt",
+        "gold_parse": "SELECT template_type_code FROM Templates EXCEPT SELECT template_type_code FROM Templates AS T1 JOIN Documents AS T2 ON T1.template_id  =  T2.template_id",
+        "predicted_parse": "SELECT T1.template_type_code FROM ref_template_types AS T1 EXCEPT SELECT T2.template_type_code FROM templates AS T2",
+        "feedback": "In step 2 , Find template type code only for whose corresponding template id is present in documents table."
+    },
+    {
+        "question": "What are the codes of template types that are not used for any document?",
+        "db_id": "cre_Doc_Template_Mgt",
+        "gold_parse": "SELECT template_type_code FROM Templates EXCEPT SELECT template_type_code FROM Templates AS T1 JOIN Documents AS T2 ON T1.template_id  =  T2.template_id",
+        "predicted_parse": "SELECT T1.template_type_code FROM ref_template_types AS T1 EXCEPT SELECT T2.template_id FROM documents AS T2",
+        "feedback": "In step 1 , Substitute template type code of reference template types table with template id of templates table."
+    },
+    {
+        "question": "Return the ids corresponding to templates with the description 'Presentation'.",
+        "db_id": "cre_Doc_Template_Mgt",
+        "gold_parse": "SELECT T2.template_id FROM Ref_template_types AS T1 JOIN Templates AS T2 ON T1.template_type_code  = T2.template_type_code WHERE T1.template_type_description  =  \"Presentation\"",
+        "predicted_parse": "SELECT T1.template_id FROM documents AS T1 JOIN templates AS T2 ON T1.template_id = T2.template_id JOIN ref_template_types AS T3 ON T2.template_type_code = T3.template_type_code WHERE T3.template_type_description = ' value '",
+        "feedback": "remove documents from step 1"
+    },
+    {
+        "question": "What are the details for the paragraph that includes the text 'Korea'?",
+        "db_id": "cre_Doc_Template_Mgt",
+        "gold_parse": "SELECT Other_Details FROM Paragraphs WHERE paragraph_text  =  'Korea'",
+        "predicted_parse": "SELECT other_details FROM paragraphs WHERE paragraph_text LIKE ' value '",
+        "feedback": "Interchange \"contains\" with \"equals\"."
+    },
+    {
+        "question": "Return the different document ids along with the number of paragraphs corresponding to each, ordered by id.",
+        "db_id": "cre_Doc_Template_Mgt",
+        "gold_parse": "SELECT document_id ,  count(*) FROM Paragraphs GROUP BY document_id ORDER BY document_id",
+        "predicted_parse": "SELECT document_id , Count ( * ) FROM paragraphs GROUP BY document_id ORDER BY Count ( * ) ASC",
+        "feedback": "In step 2 , order it by document id in place of results of step 1."
+    },
+    {
+        "question": "Show the document id with paragraph text 'Brazil' and 'Ireland'.",
+        "db_id": "cre_Doc_Template_Mgt",
+        "gold_parse": "SELECT document_id FROM Paragraphs WHERE paragraph_text  =  'Brazil' INTERSECT SELECT document_id FROM Paragraphs WHERE paragraph_text  =  'Ireland'",
+        "predicted_parse": "SELECT T1.document_id FROM documents AS T1 JOIN paragraphs AS T2 ON T1.document_id = T2.document_id WHERE T2.paragraph_text = ' value ' AND T2.paragraph_text = ' value '",
+        "feedback": "ireland and brazil will be the text of different paragraphs"
+    },
+    {
+        "question": "What are the ids of documents that contain the paragraph text 'Brazil' and 'Ireland'?",
+        "db_id": "cre_Doc_Template_Mgt",
+        "gold_parse": "SELECT document_id FROM Paragraphs WHERE paragraph_text  =  'Brazil' INTERSECT SELECT document_id FROM Paragraphs WHERE paragraph_text  =  'Ireland'",
+        "predicted_parse": "SELECT document_id FROM paragraphs WHERE paragraph_text LIKE ' value '",
+        "feedback": "Make sure to find where paragraph text contains Brazil as well."
+    },
+    {
+        "question": "List the most common hometown of teachers.",
+        "db_id": "course_teach",
+        "gold_parse": "SELECT Hometown FROM teacher GROUP BY Hometown ORDER BY COUNT(*) DESC LIMIT 1",
+        "predicted_parse": "SELECT T1.hometown FROM teacher AS T1 JOIN course_arrange AS T2 ON T1.teacher_id = T2.teacher_id GROUP BY T1.hometown ORDER BY Count ( * ) DESC LIMIT 0",
+        "feedback": "In step 3 only find for largest value of results from step 2."
+    },
+    {
+        "question": "What is the most commmon hometowns for teachers?",
+        "db_id": "course_teach",
+        "gold_parse": "SELECT Hometown FROM teacher GROUP BY Hometown ORDER BY COUNT(*) DESC LIMIT 1",
+        "predicted_parse": "SELECT T1.hometown FROM teacher AS T1 JOIN course_arrange AS T2 ON T1.teacher_id = T2.teacher_id GROUP BY T1.hometown ORDER BY Count ( * ) DESC LIMIT 0",
+        "feedback": "course arrange table is not required , remove step 1."
+    },
+    {
+        "question": "How many visitors below age 30 are there?",
+        "db_id": "museum_visit",
+        "gold_parse": "SELECT count(*) FROM visitor WHERE age  <  30",
+        "predicted_parse": "SELECT Count ( * ) FROM visit AS T1 JOIN visitor AS T2 ON T1.visitor_id = T2.id WHERE T2.age < ' value '",
+        "feedback": "remove step 1 , only use customer table in step 2"
+    },
+    {
+        "question": "What is the average age of the visitors whose membership level is not higher than 4?",
+        "db_id": "museum_visit",
+        "gold_parse": "SELECT avg(age) FROM visitor WHERE Level_of_membership  <=  4",
+        "predicted_parse": "SELECT Avg ( age ) FROM visitor WHERE level_of_membership ! = ' value '",
+        "feedback": "Make sure level of membership is not less than or equal to 4."
+    },
+    {
+        "question": "Find the name and membership level of the visitors whose membership level is higher than 4, and sort by their age from old to young.",
+        "db_id": "museum_visit",
+        "gold_parse": "SELECT name ,  Level_of_membership FROM visitor WHERE Level_of_membership  >  4 ORDER BY age DESC",
+        "predicted_parse": "SELECT name , level_of_membership FROM visitor WHERE age > ' value ' ORDER BY age ASC",
+        "feedback": "Supersede first \"Age\" with level of membership and \"ascending\" with \"descending\"."
+    },
+    {
+        "question": "Find the id and name of the museum that has the most staff members?",
+        "db_id": "museum_visit",
+        "gold_parse": "SELECT museum_id ,  name FROM museum ORDER BY num_of_staff DESC LIMIT 1",
+        "predicted_parse": "SELECT museum_id , name FROM museum GROUP BY museum_id ORDER BY Count ( * ) DESC LIMIT 0",
+        "feedback": "In step 1 find num of staff of museum table."
+    },
+    {
+        "question": "Find the name and age of the visitor who bought the most tickets at once.",
+        "db_id": "museum_visit",
+        "gold_parse": "SELECT t1.name ,  t1.age FROM visitor AS t1 JOIN visit AS t2 ON t1.id  =  t2.visitor_id ORDER BY t2.num_of_ticket DESC LIMIT 1",
+        "predicted_parse": "SELECT T1.name , T1.age FROM visitor AS T1 JOIN visit AS T2 ON T1.id = T2.visitor_id GROUP BY T1.id ORDER BY Count ( * ) DESC LIMIT 0",
+        "feedback": "In step 2 find num of ticket of visit table."
+    },
+    {
+        "question": "What is the name of the visitor who visited both a museum opened before 2009 and a museum opened after 2011?",
+        "db_id": "museum_visit",
+        "gold_parse": "SELECT t1.name FROM visitor AS t1 JOIN visit AS t2 ON t1.id  =  t2.visitor_id JOIN museum AS t3 ON t3.Museum_ID  =  t2.Museum_ID WHERE t3.open_year  <  2009 INTERSECT SELECT t1.name FROM visitor AS t1 JOIN visit AS t2 ON t1.id  =  t2.visitor_id JOIN museum AS t3 ON t3.Museum_ID  =  t2.Museum_ID WHERE t3.open_year  >  2011",
+        "predicted_parse": "SELECT T1.name FROM visitor AS T1 JOIN visit AS T2 ON T1.id = T2.visitor_id JOIN museum AS T3 ON T2.museum_id = T3.museum_id WHERE T3.open_year < ' value ' INTERSECT SELECT T1.name FROM visitor AS T1 JOIN museum AS T3 ON T1.name = T3.name WHERE T3.open_year > ' value '",
+        "feedback": "in step 3 , need to include visit table"
+    },
+    {
+        "question": "Find the number of visitors who did not visit any museum opened after 2010.",
+        "db_id": "museum_visit",
+        "gold_parse": "SELECT count(*) FROM visitor WHERE id NOT IN (SELECT t2.visitor_id FROM museum AS t1 JOIN visit AS t2 ON t1.Museum_ID  =  t2.Museum_ID WHERE t1.open_year  >  2010)",
+        "predicted_parse": "SELECT Count ( * ) FROM visit AS T1 WHERE T1.museum_id NOT IN ( SELECT T2.museum_id FROM museum AS T2 WHERE T2.open_year > ' value ' )",
+        "feedback": "In step 2 find count of visit 's customer id whose (corresponding)Museum ID not present in results of step 1"
+    },
+    {
+        "question": "Find the average age of losers and winners of all matches.",
+        "db_id": "wta_1",
+        "gold_parse": "SELECT avg(loser_age) ,  avg(winner_age) FROM matches",
+        "predicted_parse": "SELECT Avg ( loser_age ) , Count ( * ) FROM matches",
+        "feedback": "Don 't find number of rows , find average winner age instead."
+    },
+    {
+        "question": "What are the average ages of losers and winners across matches?",
+        "db_id": "wta_1",
+        "gold_parse": "SELECT avg(loser_age) ,  avg(winner_age) FROM matches",
+        "predicted_parse": "SELECT Avg ( loser_age ) , Count ( * ) FROM matches",
+        "feedback": "Also find average winner age , erase \"and the number of rows in\" phrase."
+    },
+    {
+        "question": "Find the average rank of winners in all matches.",
+        "db_id": "wta_1",
+        "gold_parse": "SELECT avg(winner_rank) FROM matches",
+        "predicted_parse": "SELECT Avg ( loser_rank ) FROM matches",
+        "feedback": "Swap loser rank with winner rank"
+    },
+    {
+        "question": "What is the best rank of losers across all matches?",
+        "db_id": "wta_1",
+        "gold_parse": "SELECT min(loser_rank) FROM matches",
+        "predicted_parse": "SELECT Max ( loser_rank ) FROM matches",
+        "feedback": "best rank means minimum"
+    },
+    {
+        "question": "Find the number of distinct name of losers.",
+        "db_id": "wta_1",
+        "gold_parse": "SELECT count(DISTINCT loser_name) FROM matches",
+        "predicted_parse": "SELECT Count ( DISTINCT winner_name ) FROM matches",
+        "feedback": "Change winner age with loser name"
+    },
+    {
+        "question": "What are the names of players who won in both 2013 and 2016?",
+        "db_id": "wta_1",
+        "gold_parse": "SELECT winner_name FROM matches WHERE YEAR  =  2013 INTERSECT SELECT winner_name FROM matches WHERE YEAR  =  2016",
+        "predicted_parse": "SELECT T1.first_name FROM players AS T1 JOIN matches AS T2 ON T1.player_id = T2.loser_id WHERE T2.year = ' value ' INTERSECT SELECT T1.last_name FROM players AS T1 JOIN matches AS T2 ON T1.player_id = T2.loser_id WHERE T2.year = ' value '",
+        "feedback": "Also find last name in step 2; Also find first name in step 3."
+    },
+    {
+        "question": "Find the first name and country code of the oldest player.",
+        "db_id": "wta_1",
+        "gold_parse": "SELECT first_name ,  country_code FROM players ORDER BY birth_date LIMIT 1",
+        "predicted_parse": "SELECT first_name , country_code FROM players ORDER BY birth_date DESC LIMIT 0",
+        "feedback": "Do not order by descending order , rather ensure to find for smallest value of birth date"
+    },
+    {
+        "question": "What is the first name and country code of the oldest player?",
+        "db_id": "wta_1",
+        "gold_parse": "SELECT first_name ,  country_code FROM players ORDER BY birth_date LIMIT 1",
+        "predicted_parse": "SELECT first_name , country_code FROM players ORDER BY birth_date DESC LIMIT 0",
+        "feedback": "it should be ascending"
+    },
+    {
+        "question": "Find the first name and country code of the player who did the most number of tours.",
+        "db_id": "wta_1",
+        "gold_parse": "SELECT T1.country_code ,  T1.first_name FROM players AS T1 JOIN rankings AS T2 ON T1.player_id  =  T2.player_id ORDER BY T2.tours DESC LIMIT 1",
+        "predicted_parse": "SELECT T1.first_name , T1.country_code FROM players AS T1 JOIN matches AS T2 ON T1.player_id = T2.loser_id GROUP BY T1.player_id ORDER BY Count ( * ) DESC LIMIT 0",
+        "feedback": "Step 1 Exchange matches table with rankings table , Step 2 find tours of rankings table."
+    },
+    {
+        "question": "What is the first name and country code of the player with the most tours?",
+        "db_id": "wta_1",
+        "gold_parse": "SELECT T1.country_code ,  T1.first_name FROM players AS T1 JOIN rankings AS T2 ON T1.player_id  =  T2.player_id ORDER BY T2.tours DESC LIMIT 1",
+        "predicted_parse": "SELECT T1.first_name , T1.country_code FROM players AS T1 JOIN matches AS T2 ON T1.player_id = T2.loser_id GROUP BY T1.player_id ORDER BY Count ( * ) DESC LIMIT 0",
+        "feedback": "Step 1 , Replace matches with \"rankings\". Step 2 , find tours of the rankings table."
+    },
+    {
+        "question": "Find the total number of tours for each ranking date.",
+        "db_id": "wta_1",
+        "gold_parse": "SELECT sum(tours) ,  ranking_date FROM rankings GROUP BY ranking_date",
+        "predicted_parse": "SELECT ranking_date , Count ( * ) FROM rankings GROUP BY ranking_date",
+        "feedback": "Find summation of tours for each value of ranking date of rankings table."
+    },
+    {
+        "question": "How many total tours were there for each ranking date?",
+        "db_id": "wta_1",
+        "gold_parse": "SELECT sum(tours) ,  ranking_date FROM rankings GROUP BY ranking_date",
+        "predicted_parse": "SELECT ranking_date , Count ( * ) FROM rankings GROUP BY ranking_date",
+        "feedback": "Make sure to find summation of tours"
+    },
+    {
+        "question": "How many different winners both participated in the WTA Championships and were left handed?",
+        "db_id": "wta_1",
+        "gold_parse": "SELECT count(DISTINCT winner_name) FROM matches WHERE tourney_name  =  'WTA Championships' AND winner_hand  =  'L'",
+        "predicted_parse": "SELECT Count ( DISTINCT winner_name ) FROM matches WHERE tourney_name = ' value ' INTERSECT SELECT Count ( DISTINCT winner_name ) FROM matches WHERE tourney_name = ' value '",
+        "feedback": "In step 1 , Exchange tourney name with winner hand"
+    },
+    {
+        "question": "Find the number of left handed winners who participated in the WTA Championships.",
+        "db_id": "wta_1",
+        "gold_parse": "SELECT count(DISTINCT winner_name) FROM matches WHERE tourney_name  =  'WTA Championships' AND winner_hand  =  'L'",
+        "predicted_parse": "SELECT Count ( * ) FROM matches WHERE tourney_name = ' value ' AND tourney_name = ' value '",
+        "feedback": "Change tourney name equals L\" to winner hand equals L\"."
+    },
+    {
+        "question": "Find the first name, country code and birth date of the winner who has the highest rank points in all matches.",
+        "db_id": "wta_1",
+        "gold_parse": "SELECT T1.first_name ,  T1.country_code ,  T1.birth_date FROM players AS T1 JOIN matches AS T2 ON T1.player_id  =  T2.winner_id ORDER BY T2.winner_rank_points DESC LIMIT 1",
+        "predicted_parse": "SELECT T1.first_name , T1.country_code , T1.birth_date FROM players AS T1 JOIN matches AS T2 ON T1.player_id = T2.loser_id ORDER BY T2.loser_rank_points DESC LIMIT 0",
+        "feedback": "Alter loser rank points with winner rank points hand make certain only find for first row of descending order."
+    },
+    {
+        "question": "List the name and tonnage ordered by in descending alphaetical order for the names.",
+        "db_id": "battle_death",
+        "gold_parse": "SELECT name ,  tonnage FROM ship ORDER BY name DESC",
+        "predicted_parse": "SELECT name , tonnage FROM ship ORDER BY tonnage DESC",
+        "feedback": "Order descending by name instead of tonnage"
+    },
+    {
+        "question": "What is the average number of injuries caused each time?",
+        "db_id": "battle_death",
+        "gold_parse": "SELECT avg(injured) FROM death",
+        "predicted_parse": "SELECT Avg ( injured ) , note FROM death GROUP BY note",
+        "feedback": "Remove \"each value of note in death table along with the\" phrase."
+    },
+    {
+        "question": "What are the death and injury situations caused by the ship with tonnage 't'?",
+        "db_id": "battle_death",
+        "gold_parse": "SELECT T1.killed ,  T1.injured FROM death AS T1 JOIN ship AS t2 ON T1.caused_by_ship_id  =  T2.id WHERE T2.tonnage  =  't'",
+        "predicted_parse": "SELECT T1.id , T1.injured FROM death AS T1 JOIN ship AS T2 ON T1.caused_by_ship_id = T2.id WHERE T2.tonnage = ' value '",
+        "feedback": "In step 2 , Substitute id with killed"
+    },
+    {
+        "question": "What are the ids and names of the battles that led to more than 10 people killed in total.",
+        "db_id": "battle_death",
+        "gold_parse": "SELECT T1.id ,  T1.name FROM battle AS T1 JOIN ship AS T2 ON T1.id  =  T2.lost_in_battle JOIN death AS T3 ON T2.id  =  T3.caused_by_ship_id GROUP BY T1.id HAVING sum(T3.killed)  >  10",
+        "predicted_parse": "SELECT T1.id , T1.name FROM battle AS T1 JOIN death AS T2 ON T1.id = T2.id GROUP BY T1.id HAVING Sum ( T2.killed ) > ' value '",
+        "feedback": "need to use ship table in step 1"
+    },
+    {
+        "question": "What is the ship id and name that caused most total injuries?",
+        "db_id": "battle_death",
+        "gold_parse": "SELECT T2.id ,  T2.name FROM death AS T1 JOIN ship AS t2 ON T1.caused_by_ship_id  =  T2.id GROUP BY T2.id ORDER BY count(*) DESC LIMIT 1",
+        "predicted_parse": "SELECT T1.id , T1.name FROM ship AS T1 JOIN death AS T2 ON T1.id = T2.caused_by_ship_id GROUP BY T1.id ORDER BY Sum ( T2.injured ) DESC LIMIT 0",
+        "feedback": "in step 3 , find id and name with largest summation in step 2"
+    },
+    {
+        "question": "How many battles did not lose any ship with tonnage '225'?",
+        "db_id": "battle_death",
+        "gold_parse": "SELECT count(*) FROM battle WHERE id NOT IN ( SELECT lost_in_battle FROM ship WHERE tonnage  =  '225' )",
+        "predicted_parse": "SELECT Count ( * ) FROM battle AS T1 WHERE T1.id NOT IN ( SELECT T2.lost_in_battle FROM ship AS T2 WHERE T2.tonnage > ' value ' )",
+        "feedback": "Swap \"greater than\" with \"equals\" in step 1."
+    },
+    {
+        "question": "List the name and date the battle that has lost the ship named 'Lettice' and the ship named 'HMS Atalanta'",
+        "db_id": "battle_death",
+        "gold_parse": "SELECT T1.name ,  T1.date FROM battle AS T1 JOIN ship AS T2 ON T1.id  =  T2.lost_in_battle WHERE T2.name  =  'Lettice' INTERSECT SELECT T1.name ,  T1.date FROM battle AS T1 JOIN ship AS T2 ON T1.id  =  T2.lost_in_battle WHERE T2.name  =  'HMS Atalanta'",
+        "predicted_parse": "SELECT T1.name , T1.date FROM battle AS T1 JOIN ship AS T2 ON T1.id = T2.lost_in_battle WHERE T2.name = ' value ' AND T2.name = ' value '",
+        "feedback": "separately find battle of each ship"
+    },
+    {
+        "question": "what are all the addresses including line 1 and line 2?",
+        "db_id": "student_transcripts_tracking",
+        "gold_parse": "SELECT line_1 ,  line_2 FROM addresses",
+        "predicted_parse": "SELECT line_1 , line_2 FROM addresses WHERE line_1 = ' value ' AND line_2 LIKE ' value '",
+        "feedback": "Find each value of address id with their matching line 1 and line 2"
+    },
+    {
+        "question": "Which department offers the most number of degrees? List department name and id.",
+        "db_id": "student_transcripts_tracking",
+        "gold_parse": "SELECT T2.department_name ,  T1.department_id FROM Degree_Programs AS T1 JOIN Departments AS T2 ON T1.department_id  =  T2.department_id GROUP BY T1.department_id ORDER BY count(*) DESC LIMIT 1",
+        "predicted_parse": "SELECT T1.department_name , T1.department_id FROM departments AS T1 JOIN degree_programs AS T2 ON T1.department_id = T2.department_id GROUP BY T1.department_id ORDER BY Sum ( T2.degree_program_id ) DESC LIMIT 0",
+        "feedback": "In step 2 , Don 't find \"summation of degree program id and find number of rows per department id"
+    },
+    {
+        "question": "For each department id, what is the name of the department with the most number of degrees?",
+        "db_id": "student_transcripts_tracking",
+        "gold_parse": "SELECT T2.department_name ,  T1.department_id FROM Degree_Programs AS T1 JOIN Departments AS T2 ON T1.department_id  =  T2.department_id GROUP BY T1.department_id ORDER BY count(*) DESC LIMIT 1",
+        "predicted_parse": "SELECT T1.department_name FROM departments AS T1 JOIN degree_programs AS T2 ON T1.department_id = T2.department_id GROUP BY T1.department_name ORDER BY Sum ( T2.degree_summary_name ) DESC LIMIT 0",
+        "feedback": "Find departments 's department name along with number of rows of each value of degree programs 's department id"
+    },
+    {
+        "question": "Who are enrolled in 2 degree programs in one semester? List the first name, middle name and last name and the id.",
+        "db_id": "student_transcripts_tracking",
+        "gold_parse": "SELECT T1.first_name ,  T1.middle_name ,  T1.last_name ,  T1.student_id FROM Students AS T1 JOIN Student_Enrolment AS T2 ON T1.student_id  =  T2.student_id GROUP BY T1.student_id HAVING count(*)  =  2",
+        "predicted_parse": "SELECT T1.first_name , T1.middle_name , T2.degree_program_id FROM students AS T1 JOIN student_enrolment AS T2 ON T1.student_id = T2.student_id WHERE T2.semester_id = ' value ' GROUP BY T2.degree_program_id HAVING Count ( * ) = ' value '",
+        "feedback": "Find first name , middle name , last name and student id whose count of degree programs for each semester id above 2."
+    },
+    {
+        "question": "What are the first, middle, and last names, along with the ids, of all students who enrolled in 2 degree programs in one semester?",
+        "db_id": "student_transcripts_tracking",
+        "gold_parse": "SELECT T1.first_name ,  T1.middle_name ,  T1.last_name ,  T1.student_id FROM Students AS T1 JOIN Student_Enrolment AS T2 ON T1.student_id  =  T2.student_id GROUP BY T1.student_id HAVING count(*)  =  2",
+        "predicted_parse": "SELECT T1.first_name , T1.middle_name , T1.last_name FROM students AS T1 JOIN student_enrolment AS T2 ON T1.student_id = T2.student_id WHERE T2.semester_id = ' value ' GROUP BY T1.student_id HAVING Count ( * ) = ' value '",
+        "feedback": "Find students 's first name , middle name , last name , student id whose count of student enrolment 's student id equals 2 for same semesters"
+    },
+    {
+        "question": "Find the kind of program which most number of students are enrolled in?",
+        "db_id": "student_transcripts_tracking",
+        "gold_parse": "SELECT T1.degree_summary_name FROM Degree_Programs AS T1 JOIN Student_Enrolment AS T2 ON T1.degree_program_id  =  T2.degree_program_id GROUP BY T1.degree_summary_name ORDER BY count(*) DESC LIMIT 1",
+        "predicted_parse": "SELECT degree_program_id FROM student_enrolment GROUP BY degree_program_id ORDER BY Count ( * ) DESC LIMIT 0",
+        "feedback": "In step 2 find degree summary description for corresponding first row of descending order of step 1 's results."
+    },
+    {
+        "question": "Find the program which most number of students are enrolled in. List both the id and the summary.",
+        "db_id": "student_transcripts_tracking",
+        "gold_parse": "SELECT T1.degree_program_id ,  T1.degree_summary_name FROM Degree_Programs AS T1 JOIN Student_Enrolment AS T2 ON T1.degree_program_id  =  T2.degree_program_id GROUP BY T1.degree_program_id ORDER BY count(*) DESC LIMIT 1",
+        "predicted_parse": "SELECT T1.degree_program_id , T2.degree_summary_description FROM student_enrolment AS T1 JOIN degree_programs AS T2 ON T1.degree_program_id = T2.degree_program_id GROUP BY T1.degree_program_id ORDER BY Count ( * ) DESC LIMIT 0",
+        "feedback": "Don 't order in descending order , alternatively find for highest value of step 2 's results in step 3."
+    },
+    {
+        "question": "What is the program id and the summary of the degree that has the most students enrolled?",
+        "db_id": "student_transcripts_tracking",
+        "gold_parse": "SELECT T1.degree_program_id ,  T1.degree_summary_name FROM Degree_Programs AS T1 JOIN Student_Enrolment AS T2 ON T1.degree_program_id  =  T2.degree_program_id GROUP BY T1.degree_program_id ORDER BY count(*) DESC LIMIT 1",
+        "predicted_parse": "SELECT T1.degree_program_id , T1.degree_summary_description FROM degree_programs AS T1 JOIN student_enrolment AS T2 ON T1.degree_program_id = T2.degree_program_id GROUP BY T1.degree_program_id ORDER BY Count ( * ) DESC LIMIT 0",
+        "feedback": "Replace degree summary description with degree summary name and only find for largest value of step 2 in step 3;"
+    },
+    {
+        "question": "What are all the course names of the courses which ever have students enrolled in?",
+        "db_id": "student_transcripts_tracking",
+        "gold_parse": "SELECT DISTINCT T1.course_name FROM Courses AS T1 JOIN Student_Enrolment_Courses AS T2 ON T1.course_id  =  T2.course_id",
+        "predicted_parse": "SELECT course_name , course_name FROM courses",
+        "feedback": "Erase second course name , make sure find for those whose course id present in student enrolment courses"
+    },
+    {
+        "question": "What are the last name of the students who live in North Carolina but have not registered in any degree programs?",
+        "db_id": "student_transcripts_tracking",
+        "gold_parse": "SELECT T1.last_name FROM Students AS T1 JOIN Addresses AS T2 ON T1.current_address_id  =  T2.address_id WHERE T2.state_province_county  =  'NorthCarolina' EXCEPT SELECT DISTINCT T3.last_name FROM Students AS T3 JOIN Student_Enrolment AS T4 ON T3.student_id  =  T4.student_id",
+        "predicted_parse": "SELECT T1.last_name FROM students AS T1 JOIN addresses AS T2 ON T1.current_address_id = T2.address_id WHERE T2.state_province_county = ' value ' EXCEPT SELECT T1.last_name FROM addresses AS T2 JOIN students AS T1 ON T2.address_id = T1.current_address_id JOIN student_enrolment AS T3 ON T1.student_id = T3.student_id WHERE T2.state_province_county = ' value ' AND T3.degree_program_id = ' value '",
+        "feedback": "Find students 's last name whose corresponding addresses 's state province county equals North Carolina and (corresponding)student id absent in student enrolment"
+    },
+    {
+        "question": "What is the mobile phone number of the student named Timothy Ward?",
+        "db_id": "student_transcripts_tracking",
+        "gold_parse": "SELECT cell_mobile_number FROM Students WHERE first_name  =  'Timmothy' AND last_name  =  'Ward'",
+        "predicted_parse": "SELECT cell_mobile_number FROM students WHERE first_name = ' value '",
+        "feedback": "Verify that last name equals Ward as well."
+    },
+    {
+        "question": "Who is the earliest graduate of the school? List the first name, middle name and last name.",
+        "db_id": "student_transcripts_tracking",
+        "gold_parse": "SELECT first_name ,  middle_name ,  last_name FROM Students ORDER BY date_left ASC LIMIT 1",
+        "predicted_parse": "SELECT first_name , middle_name , last_name FROM students ORDER BY date_first_registered ASC LIMIT 0",
+        "feedback": "Do not order in ascending; It should find for smallest value of date left"
+    },
+    {
+        "question": "What is the first, middle, and last name of the earliest school graduate?",
+        "db_id": "student_transcripts_tracking",
+        "gold_parse": "SELECT first_name ,  middle_name ,  last_name FROM Students ORDER BY date_left ASC LIMIT 1",
+        "predicted_parse": "SELECT first_name , middle_name , last_name FROM students ORDER BY date_first_registered ASC LIMIT 0",
+        "feedback": "Use date left in lieu of date first registered"
+    },
+    {
+        "question": "What is the first name of the student whose permanent address is different from his or her current one?",
+        "db_id": "student_transcripts_tracking",
+        "gold_parse": "SELECT first_name FROM Students WHERE current_address_id != permanent_address_id",
+        "predicted_parse": "SELECT DISTINCT first_name FROM students WHERE current_address_id < ( SELECT Avg ( current_address_id ) FROM students )",
+        "feedback": "Find first name of students table whose value of permanent address id not equals to value of current address id"
+    },
+    {
+        "question": "Which address holds the most number of students currently? List the address id and all lines.",
+        "db_id": "student_transcripts_tracking",
+        "gold_parse": "SELECT T1.address_id ,  T1.line_1 ,  T1.line_2 FROM Addresses AS T1 JOIN Students AS T2 ON T1.address_id  =  T2.current_address_id GROUP BY T1.address_id ORDER BY count(*) DESC LIMIT 1",
+        "predicted_parse": "SELECT T1.address_id , T1.line_1 FROM addresses AS T1 JOIN students AS T2 ON T1.address_id = T2.current_address_id GROUP BY T1.address_id ORDER BY Count ( * ) DESC LIMIT 0",
+        "feedback": "Swap address id with current address id 2);Find line 2 , line 3 ahead of line 1 , just find first row of descending order(step 3)."
+    },
+    {
+        "question": "What is the id, line 1, and line 2 of the address with the most students?",
+        "db_id": "student_transcripts_tracking",
+        "gold_parse": "SELECT T1.address_id ,  T1.line_1 ,  T1.line_2 FROM Addresses AS T1 JOIN Students AS T2 ON T1.address_id  =  T2.current_address_id GROUP BY T1.address_id ORDER BY count(*) DESC LIMIT 1",
+        "predicted_parse": "SELECT T1.address_id , T1.line_1 , T1.line_3 FROM addresses AS T1 JOIN students AS T2 ON T1.address_id = T2.current_address_id GROUP BY T1.address_id ORDER BY Count ( * ) DESC LIMIT 0",
+        "feedback": "Substitute line 3 with line 2 and only find for highest value of step 2 's results in step 3."
+    },
+    {
+        "question": "How many times at most can a course enrollment result show in different transcripts? Also show the course enrollment id.",
+        "db_id": "student_transcripts_tracking",
+        "gold_parse": "SELECT count(*) ,  student_course_id FROM Transcript_Contents GROUP BY student_course_id ORDER BY count(*) DESC LIMIT 1",
+        "predicted_parse": "SELECT Count ( * ) , T2.transcript_id FROM student_enrolment_courses AS T1 JOIN transcript_contents AS T2 ON T1.student_course_id = T2.student_course_id GROUP BY T2.transcript_id",
+        "feedback": "In step 2 , Switch transcript id with course id and show the value with maximum count."
+    },
+    {
+        "question": "What is the maximum number of times that a course shows up in different transcripts and what is that course's enrollment id?",
+        "db_id": "student_transcripts_tracking",
+        "gold_parse": "SELECT count(*) ,  student_course_id FROM Transcript_Contents GROUP BY student_course_id ORDER BY count(*) DESC LIMIT 1",
+        "predicted_parse": "SELECT Count ( * ) , transcript_id FROM transcript_contents GROUP BY transcript_id",
+        "feedback": "Insufficient table data to answer question."
+    },
+    {
+        "question": "Find the semester when both Master students and Bachelor students got enrolled in.",
+        "db_id": "student_transcripts_tracking",
+        "gold_parse": "SELECT DISTINCT T2.semester_id FROM Degree_Programs AS T1 JOIN Student_Enrolment AS T2 ON T1.degree_program_id  =  T2.degree_program_id WHERE degree_summary_name  =  'Master' INTERSECT SELECT DISTINCT T2.semester_id FROM Degree_Programs AS T1 JOIN Student_Enrolment AS T2 ON T1.degree_program_id  =  T2.degree_program_id WHERE degree_summary_name  =  'Bachelor'",
+        "predicted_parse": "SELECT T1.semester_name FROM semesters AS T1 JOIN student_enrolment AS T2 ON T1.semester_id = T2.semester_id JOIN degree_programs AS T3 ON T2.degree_program_id = T3.degree_program_id WHERE T3.degree_summary_name = ' value ' INTERSECT SELECT T1.semester_name FROM semesters AS T1 JOIN degree_programs AS T3 ON T1.other_details = T3.other_details WHERE T3.degree_summary_name = ' value '",
+        "feedback": "remove step 3 and step 4 should use the results of step 1"
+    },
+    {
+        "question": "What are the different addresses that have students living there?",
+        "db_id": "student_transcripts_tracking",
+        "gold_parse": "SELECT count(DISTINCT current_address_id) FROM Students",
+        "predicted_parse": "SELECT DISTINCT email_address FROM students",
+        "feedback": "Interchange email address with current address id"
+    },
+    {
+        "question": "What other details can you tell me about students in reverse alphabetical order?",
+        "db_id": "student_transcripts_tracking",
+        "gold_parse": "SELECT other_student_details FROM Students ORDER BY other_student_details DESC",
+        "predicted_parse": "SELECT T1.other_details FROM student_enrolment AS T1 JOIN students AS T2 ON T1.student_id = T2.student_id ORDER BY T2.other_student_details DESC",
+        "feedback": "In step 2 , change other details with other student details"
+    },
+    {
+        "question": "Describe the section h.",
+        "db_id": "student_transcripts_tracking",
+        "gold_parse": "SELECT section_description FROM Sections WHERE section_name  =  'h'",
+        "predicted_parse": "SELECT section_description FROM sections",
+        "feedback": "Make sure to find for section name equals h."
+    },
+    {
+        "question": "What is the description for the section named h?",
+        "db_id": "student_transcripts_tracking",
+        "gold_parse": "SELECT section_description FROM Sections WHERE section_name  =  'h'",
+        "predicted_parse": "SELECT section_description FROM sections WHERE section_name LIKE ' value '",
+        "feedback": "Supersede \"contains\" with \"equals\"."
+    },
+    {
+        "question": "Find the first name of the students who permanently live in the country Haiti or have the cell phone number 09700166582.",
+        "db_id": "student_transcripts_tracking",
+        "gold_parse": "SELECT T1.first_name FROM Students AS T1 JOIN Addresses AS T2 ON T1.permanent_address_id  =  T2.address_id WHERE T2.country  =  'Haiti' UNION SELECT first_name FROM Students WHERE cell_mobile_number  =  '09700166582'",
+        "predicted_parse": "SELECT T1.first_name FROM students AS T1 JOIN addresses AS T2 ON T1.current_address_id = T2.address_id WHERE T2.country = ' value ' OR T1.cell_mobile_number = ' value '",
+        "feedback": "In step 2 , Swap country with cell mobile number and cell mobile number with \"country\"."
+    },
+    {
+        "question": "What are the first names of the students who live in Haiti permanently or have the cell phone number 09700166582?",
+        "db_id": "student_transcripts_tracking",
+        "gold_parse": "SELECT T1.first_name FROM Students AS T1 JOIN Addresses AS T2 ON T1.permanent_address_id  =  T2.address_id WHERE T2.country  =  'Haiti' UNION SELECT first_name FROM Students WHERE cell_mobile_number  =  '09700166582'",
+        "predicted_parse": "SELECT T1.first_name FROM students AS T1 JOIN addresses AS T2 ON T1.current_address_id = T2.address_id WHERE T2.country = ' value ' OR T1.cell_mobile_number = ' value '",
+        "feedback": "In step 2 , Change country with cell mobile number and cell mobile number with \"country\"."
+    },
+    {
+        "question": "List all cartoon directed by \"Ben Jones\".",
+        "db_id": "tvshow",
+        "gold_parse": "SELECT Title FROM Cartoon WHERE Directed_by = \"Ben Jones\"",
+        "predicted_parse": "SELECT title FROM cartoon WHERE directed_by = ' value ' AND directed_by = ' value '",
+        "feedback": "Take condition directed by equals Ben Jones only once."
+    },
+    {
+        "question": "List the number of different series names and contents in the TV Channel table.",
+        "db_id": "tvshow",
+        "gold_parse": "SELECT count(DISTINCT series_name) ,  count(DISTINCT content) FROM TV_Channel",
+        "predicted_parse": "SELECT Count ( DISTINCT series_name ) , Count ( DISTINCT * ) FROM tv_channel",
+        "feedback": "Substitute \"rows\" with \"Content\"."
+    },
+    {
+        "question": "How many different series and contents are listed in the TV Channel table?",
+        "db_id": "tvshow",
+        "gold_parse": "SELECT count(DISTINCT series_name) ,  count(DISTINCT content) FROM TV_Channel",
+        "predicted_parse": "SELECT Count ( DISTINCT series_name ) , Count ( * ) FROM tv_channel",
+        "feedback": "Change \"rows\" with \"different content"
+    },
+    {
+        "question": "What is the produdction code and channel of the most recent cartoon?",
+        "db_id": "tvshow",
+        "gold_parse": "SELECT production_code ,  channel FROM cartoon ORDER BY original_air_date LIMIT 1",
+        "predicted_parse": "SELECT production_code , channel FROM cartoon ORDER BY original_air_date DESC LIMIT 0",
+        "feedback": "No need to order in descending order instead only find for largest value of original air date"
+    },
+    {
+        "question": "which countries' tv channels are playing some cartoon written by Todd Casey?",
+        "db_id": "tvshow",
+        "gold_parse": "SELECT T1.country FROM TV_Channel AS T1 JOIN cartoon AS T2 ON T1.id = T2.Channel WHERE T2.written_by  =  'Todd Casey'",
+        "predicted_parse": "SELECT T1.country FROM tv_channel AS T1 JOIN cartoon AS T2 ON T1.id = T2.channel WHERE T2.written_by = ' value ' AND T2.written_by = ' value '",
+        "feedback": "Remove \"and written by equals Michael Jelenic\" phrase."
+    },
+    {
+        "question": "What are the countries that have cartoons on TV that were written by Todd Casey?",
+        "db_id": "tvshow",
+        "gold_parse": "SELECT T1.country FROM TV_Channel AS T1 JOIN cartoon AS T2 ON T1.id = T2.Channel WHERE T2.written_by  =  'Todd Casey'",
+        "predicted_parse": "SELECT T1.country FROM tv_channel AS T1 JOIN cartoon AS T2 ON T1.id = T2.channel WHERE T2.written_by = ' value ' AND T2.written_by = ' value '",
+        "feedback": "Remove \"and written by equals Michael Jelenic\" phrase."
+    },
+    {
+        "question": "which countries' tv channels are not playing any cartoon written by Todd Casey?",
+        "db_id": "tvshow",
+        "gold_parse": "SELECT country FROM TV_Channel EXCEPT SELECT T1.country FROM TV_Channel AS T1 JOIN cartoon AS T2 ON T1.id = T2.Channel WHERE T2.written_by  =  'Todd Casey'",
+        "predicted_parse": "SELECT T1.country FROM tv_channel AS T1 EXCEPT SELECT T2.channel FROM cartoon AS T2 WHERE T2.written_by = ' value '",
+        "feedback": "in step 2 , find the country of each channel"
+    },
+    {
+        "question": "Find the series name and country of the tv channel that is playing some cartoons directed by Ben Jones and Michael Chang?",
+        "db_id": "tvshow",
+        "gold_parse": "SELECT T1.series_name ,  T1.country FROM TV_Channel AS T1 JOIN cartoon AS T2 ON T1.id = T2.Channel WHERE T2.directed_by  =  'Michael Chang' INTERSECT SELECT T1.series_name ,  T1.country FROM TV_Channel AS T1 JOIN cartoon AS T2 ON T1.id = T2.Channel WHERE T2.directed_by  =  'Ben Jones'",
+        "predicted_parse": "SELECT T1.series_name , T1.country FROM tv_channel AS T1 JOIN cartoon AS T2 ON T1.id = T2.channel WHERE T2.directed_by = ' value ' AND T2.directed_by = ' value '",
+        "feedback": "do directed by Ben Jones first then directed by Michael Chang and finally find series name and country in both results"
+    },
+    {
+        "question": "What is the series name and country of all TV channels that are playing cartoons directed by Ben Jones and cartoons directed by Michael Chang?",
+        "db_id": "tvshow",
+        "gold_parse": "SELECT T1.series_name ,  T1.country FROM TV_Channel AS T1 JOIN cartoon AS T2 ON T1.id = T2.Channel WHERE T2.directed_by  =  'Michael Chang' INTERSECT SELECT T1.series_name ,  T1.country FROM TV_Channel AS T1 JOIN cartoon AS T2 ON T1.id = T2.Channel WHERE T2.directed_by  =  'Ben Jones'",
+        "predicted_parse": "SELECT T1.series_name , T1.country FROM tv_channel AS T1 JOIN cartoon AS T2 ON T1.id = T2.channel WHERE T2.directed_by = ' value ' AND T2.directed_by = ' value '",
+        "feedback": "first find series name and country whose directed by equals Ben Jones and find those whose directed by equals Michael Chang then find their intersection"
+    },
+    {
+        "question": "find id of the tv channels that from the countries where have more than two tv channels.",
+        "db_id": "tvshow",
+        "gold_parse": "SELECT id FROM tv_channel GROUP BY country HAVING count(*)  >  2",
+        "predicted_parse": "SELECT id FROM tv_channel GROUP BY id HAVING Count ( * ) > ' value '",
+        "feedback": "In step 1 , Find for each value of country instead of id."
+    },
+    {
+        "question": "What are the names of poker players?",
+        "db_id": "poker_player",
+        "gold_parse": "SELECT T1.Name FROM people AS T1 JOIN poker_player AS T2 ON T1.People_ID  =  T2.People_ID",
+        "predicted_parse": "SELECT name FROM people",
+        "feedback": "Make sure to find for corresponding people id present under poker player table."
+    },
+    {
+        "question": "Return the names of all the poker players.",
+        "db_id": "poker_player",
+        "gold_parse": "SELECT T1.Name FROM people AS T1 JOIN poker_player AS T2 ON T1.People_ID  =  T2.People_ID",
+        "predicted_parse": "SELECT name FROM people",
+        "feedback": "Verify that their people id is present in poker player table."
+    },
+    {
+        "question": "What are the names of poker players, ordered ascending by the number of final tables they have made?",
+        "db_id": "poker_player",
+        "gold_parse": "SELECT T1.Name FROM people AS T1 JOIN poker_player AS T2 ON T1.People_ID  =  T2.People_ID ORDER BY T2.Final_Table_Made",
+        "predicted_parse": "SELECT T1.name FROM people AS T1 JOIN poker_player AS T2 ON T1.people_id = T2.people_id GROUP BY T1.name ORDER BY Count ( * ) ASC",
+        "feedback": "In step 2 it should barely find final table made in the results of step 1."
+    },
+    {
+        "question": "List the names of people that are not poker players.",
+        "db_id": "poker_player",
+        "gold_parse": "SELECT Name FROM people WHERE People_ID NOT IN (SELECT People_ID FROM poker_player)",
+        "predicted_parse": "SELECT name FROM people EXCEPT SELECT name FROM people",
+        "feedback": "In step 2 , Change people table\" with poker player table\"."
+    },
+    {
+        "question": "What are the names of people who do not play poker?",
+        "db_id": "poker_player",
+        "gold_parse": "SELECT Name FROM people WHERE People_ID NOT IN (SELECT People_ID FROM poker_player)",
+        "predicted_parse": "SELECT name FROM people EXCEPT SELECT name FROM people",
+        "feedback": "In step 2 , Switch people table\" with poker player table\"."
+    },
+    {
+        "question": "How many states are there?",
+        "db_id": "voter_1",
+        "gold_parse": "SELECT count(*) FROM area_code_state",
+        "predicted_parse": "SELECT Count ( DISTINCT state ) FROM votes",
+        "feedback": "use area code state table instead of votes"
+    },
+    {
+        "question": "What is last date created of votes from the state 'CA'?",
+        "db_id": "voter_1",
+        "gold_parse": "SELECT max(created) FROM votes WHERE state  =  'CA'",
+        "predicted_parse": "SELECT created FROM votes WHERE state = ' value '",
+        "feedback": "Need to find for largest value of created"
+    },
+    {
+        "question": "What are the contestant numbers and names of the contestants who had at least two votes?",
+        "db_id": "voter_1",
+        "gold_parse": "SELECT T1.contestant_number , T1.contestant_name FROM contestants AS T1 JOIN votes AS T2 ON T1.contestant_number  =  T2.contestant_number GROUP BY T1.contestant_number HAVING count(*)  >=  2",
+        "predicted_parse": "SELECT T1.contestant_number , T1.contestant_name FROM contestants AS T1 JOIN votes AS T2 ON T1.contestant_number = T2.contestant_number WHERE T2.vote_id LIKE ' value '",
+        "feedback": "Supersede vote id contains 2\" with \"number of rows of each value of contestant number equals or beyond 2\"."
+    },
+    {
+        "question": "How much surface area do the countires in the Carribean cover together?",
+        "db_id": "world_1",
+        "gold_parse": "SELECT sum(SurfaceArea) FROM country WHERE Region  =  \"Caribbean\"",
+        "predicted_parse": "SELECT Sum ( surfacearea ) FROM country WHERE name = ' value '",
+        "feedback": "Swap name with region"
+    },
+    {
+        "question": "Which region is the city Kabul located in?",
+        "db_id": "world_1",
+        "gold_parse": "SELECT Region FROM country AS T1 JOIN city AS T2 ON T1.Code  =  T2.CountryCode WHERE T2.Name  =  \"Kabul\"",
+        "predicted_parse": "SELECT district FROM city WHERE name = ' value '",
+        "feedback": "In place of district , find country 's region"
+    },
+    {
+        "question": "What region is Kabul in?",
+        "db_id": "world_1",
+        "gold_parse": "SELECT Region FROM country AS T1 JOIN city AS T2 ON T1.Code  =  T2.CountryCode WHERE T2.Name  =  \"Kabul\"",
+        "predicted_parse": "SELECT region FROM country WHERE region = ' value '",
+        "feedback": "Interchange second region with city 's Name\"."
+    },
+    {
+        "question": "Which language is the most popular in Aruba?",
+        "db_id": "world_1",
+        "gold_parse": "SELECT T2.Language FROM country AS T1 JOIN countrylanguage AS T2 ON T1.Code  =  T2.CountryCode WHERE T1.Name  =  \"Aruba\" ORDER BY Percentage DESC LIMIT 1",
+        "predicted_parse": "SELECT T1.language FROM countrylanguage AS T1 JOIN country AS T2 ON T1.countrycode = T2.code WHERE T2.name = ' value ' GROUP BY T1.language ORDER BY Count ( * ) DESC LIMIT 0",
+        "feedback": "Find language whose corresponding country is Aruba and the one whose percentage value is highest."
+    },
+    {
+        "question": "What language is predominantly spoken in Aruba?",
+        "db_id": "world_1",
+        "gold_parse": "SELECT T2.Language FROM country AS T1 JOIN countrylanguage AS T2 ON T1.Code  =  T2.CountryCode WHERE T1.Name  =  \"Aruba\" ORDER BY Percentage DESC LIMIT 1",
+        "predicted_parse": "SELECT T1.language FROM countrylanguage AS T1 JOIN country AS T2 ON T1.countrycode = T2.code WHERE T2.name = ' value '",
+        "feedback": "Ensuring that the language must have highest value in percentage in the step 2."
+    },
+    {
+        "question": "What is the name of country that has the shortest life expectancy in Asia?",
+        "db_id": "world_1",
+        "gold_parse": "SELECT Name FROM country WHERE Continent  =  \"Asia\" ORDER BY LifeExpectancy LIMIT 1",
+        "predicted_parse": "SELECT name FROM country WHERE continent = ' value ' ORDER BY lifeexpectancy ASC",
+        "feedback": "Show at best for first row of ascending order by life expectancy"
+    },
+    {
+        "question": "Give the name of the country in Asia with the lowest life expectancy.",
+        "db_id": "world_1",
+        "gold_parse": "SELECT Name FROM country WHERE Continent  =  \"Asia\" ORDER BY LifeExpectancy LIMIT 1",
+        "predicted_parse": "SELECT name FROM country WHERE continent = ' value ' ORDER BY lifeexpectancy ASC",
+        "feedback": "Find only for smallest value of life expectancy , ideally no need to go for ascending ordering."
+    },
+    {
+        "question": "How many people live in Asia, and what is the largest GNP among them?",
+        "db_id": "world_1",
+        "gold_parse": "SELECT sum(Population) ,  max(GNP) FROM country WHERE Continent  =  \"Asia\"",
+        "predicted_parse": "SELECT population , gnp FROM country WHERE continent = ' value ' ORDER BY gnp DESC LIMIT 0",
+        "feedback": "Find summation of population of country table for continent equals Asia , find highest gnp between them."
+    },
+    {
+        "question": "What is the average life expectancy in African countries that are republics?",
+        "db_id": "world_1",
+        "gold_parse": "SELECT avg(LifeExpectancy) FROM country WHERE Continent  =  \"Africa\" AND GovernmentForm  =  \"Republic\"",
+        "predicted_parse": "SELECT Avg ( lifeexpectancy ) FROM country WHERE continent = ' value '",
+        "feedback": "Also ensure government form equals Republics."
+    },
+    {
+        "question": "How many people live in Gelderland district?",
+        "db_id": "world_1",
+        "gold_parse": "SELECT sum(Population) FROM city WHERE District  =  \"Gelderland\"",
+        "predicted_parse": "SELECT population FROM city WHERE district = ' value '",
+        "feedback": "Add \"summation\" in front of population"
+    },
+    {
+        "question": "Give the mean GNP and total population of nations which are considered US territory.",
+        "db_id": "world_1",
+        "gold_parse": "SELECT avg(GNP) ,  sum(population) FROM country WHERE GovernmentForm  =  \"US Territory\"",
+        "predicted_parse": "SELECT Avg ( gnp ) , Sum ( population ) FROM country WHERE continent = ' value '",
+        "feedback": "Step is correct , but US territory cannot be considered as a continent"
+    },
+    {
+        "question": "How many official languages does Afghanistan have?",
+        "db_id": "world_1",
+        "gold_parse": "SELECT COUNT(*) FROM country AS T1 JOIN countrylanguage AS T2 ON T1.Code  =  T2.CountryCode WHERE T1.Name  =  \"Afghanistan\" AND IsOfficial  =  \"T\"",
+        "predicted_parse": "SELECT Count ( DISTINCT T1.language ) FROM countrylanguage AS T1 JOIN country AS T2 ON T1.countrycode = T2.code WHERE T2.name = ' value '",
+        "feedback": "And in Step 2 be sure that is official equals to T."
+    },
+    {
+        "question": "How many official languages are spoken in Afghanistan?",
+        "db_id": "world_1",
+        "gold_parse": "SELECT COUNT(*) FROM country AS T1 JOIN countrylanguage AS T2 ON T1.Code  =  T2.CountryCode WHERE T1.Name  =  \"Afghanistan\" AND IsOfficial  =  \"T\"",
+        "predicted_parse": "SELECT Count ( DISTINCT T1.language ) FROM countrylanguage AS T1 JOIN country AS T2 ON T1.countrycode = T2.code WHERE T2.name = ' value '",
+        "feedback": "In step 2 , Assure that countrylanguage 's is official is equal to T."
+    },
+    {
+        "question": "Which continent has the most diverse languages?",
+        "db_id": "world_1",
+        "gold_parse": "SELECT T1.Continent FROM country AS T1 JOIN countrylanguage AS T2 ON T1.Code  =  T2.CountryCode GROUP BY T1.Continent ORDER BY COUNT(*) DESC LIMIT 1",
+        "predicted_parse": "SELECT T1.continent FROM country AS T1 JOIN countrylanguage AS T2 ON T1.code = T2.countrycode GROUP BY T1.continent ORDER BY Count ( DISTINCT T2.language ) DESC LIMIT 0",
+        "feedback": "Only find for largest value of step 2 's results in step 3."
+    },
+    {
+        "question": "How many countries speak both English and Dutch?",
+        "db_id": "world_1",
+        "gold_parse": "SELECT COUNT(*) FROM (SELECT T1.Name FROM country AS T1 JOIN countrylanguage AS T2 ON T1.Code  =  T2.CountryCode WHERE T2.Language  =  \"English\" INTERSECT SELECT T1.Name FROM country AS T1 JOIN countrylanguage AS T2 ON T1.Code  =  T2.CountryCode WHERE T2.Language  =  \"Dutch\")",
+        "predicted_parse": "SELECT Count ( * ) FROM country AS T1 JOIN countrylanguage AS T2 ON T1.code = T2.countrycode WHERE T2.language = ' value ' INTERSECT SELECT Count ( * ) FROM country AS T1 JOIN countrylanguage AS T2 ON T1.code = T2.countrycode WHERE T2.language = ' value '",
+        "feedback": "in steps 2 and 3 , find name of those countries and in step find the number of rows"
+    },
+    {
+        "question": "What is the number of nations that use English and Dutch?",
+        "db_id": "world_1",
+        "gold_parse": "SELECT COUNT(*) FROM (SELECT T1.Name FROM country AS T1 JOIN countrylanguage AS T2 ON T1.Code  =  T2.CountryCode WHERE T2.Language  =  \"English\" INTERSECT SELECT T1.Name FROM country AS T1 JOIN countrylanguage AS T2 ON T1.Code  =  T2.CountryCode WHERE T2.Language  =  \"Dutch\")",
+        "predicted_parse": "SELECT Count ( * ) FROM country AS T1 JOIN countrylanguage AS T2 ON T1.code = T2.countrycode WHERE T2.language = ' value ' INTERSECT SELECT Count ( * ) FROM country AS T1 JOIN countrylanguage AS T2 ON T1.code = T2.countrycode WHERE T2.language = ' value '",
+        "feedback": "in steps 2 and 3 it should find the rows and in step 4 , find the number of rows"
+    },
+    {
+        "question": "What are the names of nations where both English and French are official languages?",
+        "db_id": "world_1",
+        "gold_parse": "SELECT T1.Name FROM country AS T1 JOIN countrylanguage AS T2 ON T1.Code  =  T2.CountryCode WHERE T2.Language  =  \"English\" AND T2.IsOfficial  =  \"T\" INTERSECT SELECT T1.Name FROM country AS T1 JOIN countrylanguage AS T2 ON T1.Code  =  T2.CountryCode WHERE T2.Language  =  \"French\" AND T2.IsOfficial  =  \"T\"",
+        "predicted_parse": "SELECT T1.name FROM country AS T1 JOIN countrylanguage AS T2 ON T1.code = T2.countrycode WHERE T2.language = ' value ' INTERSECT SELECT T1.name FROM country AS T1 JOIN countrylanguage AS T2 ON T1.code = T2.countrycode WHERE T2.language = ' value '",
+        "feedback": "Supersede language with is official in step 2;Add \"and language equals English\" ahead of French in step 3."
+    },
+    {
+        "question": "Give the names of countries with English and French as official languages.",
+        "db_id": "world_1",
+        "gold_parse": "SELECT T1.Name FROM country AS T1 JOIN countrylanguage AS T2 ON T1.Code  =  T2.CountryCode WHERE T2.Language  =  \"English\" AND T2.IsOfficial  =  \"T\" INTERSECT SELECT T1.Name FROM country AS T1 JOIN countrylanguage AS T2 ON T1.Code  =  T2.CountryCode WHERE T2.Language  =  \"French\" AND T2.IsOfficial  =  \"T\"",
+        "predicted_parse": "SELECT T1.name FROM country AS T1 JOIN countrylanguage AS T2 ON T1.code = T2.countrycode WHERE T2.language = ' value ' INTERSECT SELECT T1.name FROM country AS T1 JOIN countrylanguage AS T2 ON T1.code = T2.countrycode WHERE T2.language = ' value '",
+        "feedback": "Step 2 , Exchange \"equals T\" with \"equals English\". Step 2 and 3 Verify is official equals T."
+    },
+    {
+        "question": "What are the countries where either English or Dutch is the official language?",
+        "db_id": "world_1",
+        "gold_parse": "SELECT * FROM country AS T1 JOIN countrylanguage AS T2 ON T1.Code  =  T2.CountryCode WHERE T2.Language  =  \"English\" AND IsOfficial  =  \"T\" UNION SELECT * FROM country AS T1 JOIN countrylanguage AS T2 ON T1.Code  =  T2.CountryCode WHERE T2.Language  =  \"Dutch\" AND IsOfficial  =  \"T\"",
+        "predicted_parse": "SELECT T1.name FROM country AS T1 JOIN countrylanguage AS T2 ON T1.code = T2.countrycode WHERE T2.language = ' value ' OR T2.language = ' value '",
+        "feedback": "In Step 2 , Supersede \"T\" with \"English\" and make certain that is official equals T."
+    },
+    {
+        "question": "Which countries have either English or Dutch as an official language?",
+        "db_id": "world_1",
+        "gold_parse": "SELECT * FROM country AS T1 JOIN countrylanguage AS T2 ON T1.Code  =  T2.CountryCode WHERE T2.Language  =  \"English\" AND IsOfficial  =  \"T\" UNION SELECT * FROM country AS T1 JOIN countrylanguage AS T2 ON T1.Code  =  T2.CountryCode WHERE T2.Language  =  \"Dutch\" AND IsOfficial  =  \"T\"",
+        "predicted_parse": "SELECT T1.name FROM country AS T1 JOIN countrylanguage AS T2 ON T1.code = T2.countrycode WHERE T2.language = ' value ' OR T2.language = ' value '",
+        "feedback": "Interchange \"T\" with \"English\" and also ensure is official equals T in step 2."
+    },
+    {
+        "question": "Which languages are spoken by only one country in republic governments?",
+        "db_id": "world_1",
+        "gold_parse": "SELECT T2.Language FROM country AS T1 JOIN countrylanguage AS T2 ON T1.Code  =  T2.CountryCode WHERE T1.GovernmentForm  =  \"Republic\" GROUP BY T2.Language HAVING COUNT(*)  =  1",
+        "predicted_parse": "SELECT T1.language FROM countrylanguage AS T1 JOIN country AS T2 ON T1.countrycode = T2.code GROUP BY T1.language HAVING Count ( * ) = ' value '",
+        "feedback": "In step 3 ensure that government form equals Republic."
+    },
+    {
+        "question": "What languages are only used by a single country with a republic government?",
+        "db_id": "world_1",
+        "gold_parse": "SELECT T2.Language FROM country AS T1 JOIN countrylanguage AS T2 ON T1.Code  =  T2.CountryCode WHERE T1.GovernmentForm  =  \"Republic\" GROUP BY T2.Language HAVING COUNT(*)  =  1",
+        "predicted_parse": "SELECT T1.language FROM countrylanguage AS T1 JOIN country AS T2 ON T1.countrycode = T2.code WHERE T2.governmentform = ' value '",
+        "feedback": "still need to make sure language is not used by countries with other government forms"
+    },
+    {
+        "question": "Find the city with the largest population that uses English.",
+        "db_id": "world_1",
+        "gold_parse": "SELECT T1.Name ,  T1.Population FROM city AS T1 JOIN countrylanguage AS T2 ON T1.CountryCode  =  T2.CountryCode WHERE T2.Language  =  \"English\" ORDER BY T1.Population DESC LIMIT 1",
+        "predicted_parse": "SELECT T1.name FROM city AS T1 JOIN countrylanguage AS T2 ON T1.countrycode = T2.countrycode WHERE T2.language = ' value ' ORDER BY T1.population DESC LIMIT 0",
+        "feedback": "Find exclusively for first row of descending order by population"
+    },
+    {
+        "question": "What is the most populace city that speaks English?",
+        "db_id": "world_1",
+        "gold_parse": "SELECT T1.Name ,  T1.Population FROM city AS T1 JOIN countrylanguage AS T2 ON T1.CountryCode  =  T2.CountryCode WHERE T2.Language  =  \"English\" ORDER BY T1.Population DESC LIMIT 1",
+        "predicted_parse": "SELECT T1.name FROM city AS T1 JOIN countrylanguage AS T2 ON T1.countrycode = T2.countrycode WHERE T2.language = ' value ' ORDER BY T1.population DESC LIMIT 0",
+        "feedback": "need to find only the city with largest population in step 2"
+    },
+    {
+        "question": "What are the name, population, and life expectancy of the largest Asian country by land?",
+        "db_id": "world_1",
+        "gold_parse": "SELECT Name ,  Population ,  LifeExpectancy FROM country WHERE Continent  =  \"Asia\" ORDER BY SurfaceArea DESC LIMIT 1",
+        "predicted_parse": "SELECT name , population , lifeexpectancy FROM country WHERE continent = ' value ' GROUP BY name ORDER BY Count ( * ) DESC LIMIT 0",
+        "feedback": "In step 2 ensure to find for largest value of surface area , no need of descending order."
+    },
+    {
+        "question": "What is average life expectancy in the countries where English is not the official language?",
+        "db_id": "world_1",
+        "gold_parse": "SELECT avg(LifeExpectancy) FROM country WHERE Name NOT IN (SELECT T1.Name FROM country AS T1 JOIN countrylanguage AS T2 ON T1.Code  =  T2.CountryCode WHERE T2.Language  =  \"English\" AND T2.IsOfficial  =  \"T\")",
+        "predicted_parse": "SELECT Avg ( T1.lifeexpectancy ) FROM country AS T1 JOIN countrylanguage AS T2 ON T1.code = T2.countrycode WHERE T2.language ! = ' value '",
+        "feedback": "In step 2 , Make certain is official is also T."
+    },
+    {
+        "question": "Give the mean life expectancy of countries in which English is not the official language.",
+        "db_id": "world_1",
+        "gold_parse": "SELECT avg(LifeExpectancy) FROM country WHERE Name NOT IN (SELECT T1.Name FROM country AS T1 JOIN countrylanguage AS T2 ON T1.Code  =  T2.CountryCode WHERE T2.Language  =  \"English\" AND T2.IsOfficial  =  \"T\")",
+        "predicted_parse": "SELECT Avg ( T1.lifeexpectancy ) FROM country AS T1 JOIN countrylanguage AS T2 ON T1.code = T2.countrycode WHERE T2.language ! = ' value '",
+        "feedback": "In step 2 , checking that is official equals T."
+    },
+    {
+        "question": "What is the total number of people living in the nations that do not use English?",
+        "db_id": "world_1",
+        "gold_parse": "SELECT sum(Population) FROM country WHERE Name NOT IN (SELECT T1.Name FROM country AS T1 JOIN countrylanguage AS T2 ON T1.Code  =  T2.CountryCode WHERE T2.Language  =  \"English\")",
+        "predicted_parse": "SELECT Sum ( T1.population ) FROM country AS T1 JOIN countrylanguage AS T2 ON T1.code = T2.countrycode WHERE T2.language ! = ' value '",
+        "feedback": "need to exclude any country that uses English in step 2"
+    },
+    {
+        "question": "How many people live in countries that do not speak English?",
+        "db_id": "world_1",
+        "gold_parse": "SELECT sum(Population) FROM country WHERE Name NOT IN (SELECT T1.Name FROM country AS T1 JOIN countrylanguage AS T2 ON T1.Code  =  T2.CountryCode WHERE T2.Language  =  \"English\")",
+        "predicted_parse": "SELECT T1.population FROM country AS T1 JOIN countrylanguage AS T2 ON T1.code = T2.countrycode WHERE T2.language ! = ' value '",
+        "feedback": "In step 2 , Make certain that summation of population is taken."
+    },
+    {
+        "question": "What is the official language spoken in the country whose head of state is Beatrix?",
+        "db_id": "world_1",
+        "gold_parse": "SELECT T2.Language FROM country AS T1 JOIN countrylanguage AS T2 ON T1.Code  =  T2.CountryCode WHERE T1.HeadOfState  =  \"Beatrix\" AND T2.IsOfficial  =  \"T\"",
+        "predicted_parse": "SELECT T1.language FROM countrylanguage AS T1 JOIN country AS T2 ON T1.countrycode = T2.code WHERE T2.headofstate = ' value '",
+        "feedback": "Ensure that in step 2 is official equals to T."
+    },
+    {
+        "question": "What is the official language used in the country the name of whose head of state is Beatrix.",
+        "db_id": "world_1",
+        "gold_parse": "SELECT T2.Language FROM country AS T1 JOIN countrylanguage AS T2 ON T1.Code  =  T2.CountryCode WHERE T1.HeadOfState  =  \"Beatrix\" AND T2.IsOfficial  =  \"T\"",
+        "predicted_parse": "SELECT T1.language FROM countrylanguage AS T1 JOIN country AS T2 ON T1.countrycode = T2.code WHERE T2.headofstate = ' value '",
+        "feedback": "Also ensure is official equals T in step 2."
+    },
+    {
+        "question": "What is the total number of unique official languages spoken in the countries that are founded before 1930?",
+        "db_id": "world_1",
+        "gold_parse": "SELECT count(DISTINCT T2.Language) FROM country AS T1 JOIN countrylanguage AS T2 ON T1.Code  =  T2.CountryCode WHERE  IndepYear  <  1930 AND T2.IsOfficial  =  \"T\"",
+        "predicted_parse": "SELECT Count ( DISTINCT T1.language ) FROM countrylanguage AS T1 JOIN country AS T2 ON T1.countrycode = T2.code WHERE T2.indepyear < ' value '",
+        "feedback": "In step 2 also need to ensure that is official equals T."
+    },
+    {
+        "question": "For the countries founded before 1930, what is the total number of distinct official languages?",
+        "db_id": "world_1",
+        "gold_parse": "SELECT count(DISTINCT T2.Language) FROM country AS T1 JOIN countrylanguage AS T2 ON T1.Code  =  T2.CountryCode WHERE  IndepYear  <  1930 AND T2.IsOfficial  =  \"T\"",
+        "predicted_parse": "SELECT Count ( DISTINCT T1.language ) FROM countrylanguage AS T1 JOIN country AS T2 ON T1.countrycode = T2.code WHERE T2.indepyear < ' value '",
+        "feedback": "Also ensure is official equals T in step 2."
+    },
+    {
+        "question": "What are the countries that have greater surface area than any country in Europe?",
+        "db_id": "world_1",
+        "gold_parse": "SELECT Name FROM country WHERE SurfaceArea  >  (SELECT min(SurfaceArea) FROM country WHERE Continent  =  \"Europe\")",
+        "predicted_parse": "SELECT name FROM country WHERE surfacearea > ( SELECT Max ( surfacearea ) FROM country WHERE continent = ' value ' )",
+        "feedback": "change maximum in step one to minimum"
+    },
+    {
+        "question": "Which countries have greater area than that of any country in Europe?",
+        "db_id": "world_1",
+        "gold_parse": "SELECT Name FROM country WHERE SurfaceArea  >  (SELECT min(SurfaceArea) FROM country WHERE Continent  =  \"Europe\")",
+        "predicted_parse": "SELECT name FROM country WHERE surfacearea > ( SELECT Max ( surfacearea ) FROM country WHERE continent = ' value ' )",
+        "feedback": "in step 1 , it should be minimum instead of maximum"
+    },
+    {
+        "question": "Which African countries have a smaller population than that of any country in Asia?",
+        "db_id": "world_1",
+        "gold_parse": "SELECT Name FROM country WHERE Continent  =  \"Africa\"  AND population  <  (SELECT min(population) FROM country WHERE Continent  =  \"Asia\")",
+        "predicted_parse": "SELECT name FROM country WHERE population < ( SELECT Min ( population ) FROM country WHERE continent = ' value ' )",
+        "feedback": "Replace Africa with Asia in step 1; Verify to find for continent equals Africa in step 2."
+    },
+    {
+        "question": "What are the country codes for countries that do not speak English?",
+        "db_id": "world_1",
+        "gold_parse": "SELECT CountryCode FROM countrylanguage EXCEPT SELECT CountryCode FROM countrylanguage WHERE LANGUAGE  =  \"English\"",
+        "predicted_parse": "SELECT T1.code FROM country AS T1 JOIN countrylanguage AS T2 ON T1.code = T2.countrycode WHERE T2.language ! = ' value '",
+        "feedback": "in step 2 , make sure none of the language spoken by each country is English"
+    },
+    {
+        "question": "Return the country codes for countries that do not speak English.",
+        "db_id": "world_1",
+        "gold_parse": "SELECT CountryCode FROM countrylanguage EXCEPT SELECT CountryCode FROM countrylanguage WHERE LANGUAGE  =  \"English\"",
+        "predicted_parse": "SELECT T1.code FROM country AS T1 JOIN countrylanguage AS T2 ON T1.code = T2.countrycode WHERE T2.language ! = ' value '",
+        "feedback": "in step 2 need to check none of the language of each country is English"
+    },
+    {
+        "question": "Give the country codes for countries in which people speak langauges that are not English.",
+        "db_id": "world_1",
+        "gold_parse": "SELECT DISTINCT CountryCode FROM countrylanguage WHERE LANGUAGE != \"English\"",
+        "predicted_parse": "SELECT T1.code FROM country AS T1 JOIN countrylanguage AS T2 ON T1.code = T2.countrycode WHERE T2.language ! = ' value '",
+        "feedback": "add without repetition to step 2"
+    },
+    {
+        "question": "What are the codes of the countries that do not speak English and whose government forms are not Republic?",
+        "db_id": "world_1",
+        "gold_parse": "SELECT Code FROM country WHERE GovernmentForm != \"Republic\" EXCEPT SELECT CountryCode FROM countrylanguage WHERE LANGUAGE  =  \"English\"",
+        "predicted_parse": "SELECT T1.code FROM country AS T1 JOIN countrylanguage AS T2 ON T1.code = T2.countrycode WHERE T2.language = ' value ' AND T1.governmentform ! = ' value '",
+        "feedback": "In step 2 , Ensure that language not equals English."
+    },
+    {
+        "question": "Return the codes of countries that do not speak English and do not have Republics for governments.",
+        "db_id": "world_1",
+        "gold_parse": "SELECT Code FROM country WHERE GovernmentForm != \"Republic\" EXCEPT SELECT CountryCode FROM countrylanguage WHERE LANGUAGE  =  \"English\"",
+        "predicted_parse": "SELECT T1.code FROM country AS T1 EXCEPT SELECT T2.countrycode FROM countrylanguage AS T2",
+        "feedback": "In step 1 ensure government form unequal Republics; In step 2 ensure language equals English"
+    },
+    {
+        "question": "Which cities are in European countries where English is not the official language?",
+        "db_id": "world_1",
+        "gold_parse": "SELECT DISTINCT T2.Name FROM country AS T1 JOIN city AS T2 ON T2.CountryCode  =  T1.Code WHERE T1.Continent  =  'Europe' AND T1.Name NOT IN (SELECT T3.Name FROM country AS T3 JOIN countrylanguage AS T4 ON T3.Code  =  T4.CountryCode WHERE T4.IsOfficial  =  'T' AND T4.Language  =  'English')",
+        "predicted_parse": "SELECT T1.name FROM city AS T1 JOIN country AS T2 ON T1.countrycode = T2.code WHERE T2.continent = ' value ' EXCEPT SELECT T1.name FROM city AS T1 JOIN country AS T2 ON T1.countrycode = T2.code WHERE T2.continent ! = ' value '",
+        "feedback": "Find city 's name whose country 's continent equals Europe , language equals English and is official equals F."
+    },
+    {
+        "question": "What are the names of cities in Europe for which English is not the official language?",
+        "db_id": "world_1",
+        "gold_parse": "SELECT DISTINCT T2.Name FROM country AS T1 JOIN city AS T2 ON T2.CountryCode  =  T1.Code WHERE T1.Continent  =  'Europe' AND T1.Name NOT IN (SELECT T3.Name FROM country AS T3 JOIN countrylanguage AS T4 ON T3.Code  =  T4.CountryCode WHERE T4.IsOfficial  =  'T' AND T4.Language  =  'English')",
+        "predicted_parse": "SELECT T1.name FROM city AS T1 JOIN country AS T2 ON T1.countrycode = T2.code WHERE T2.continent = ' value ' EXCEPT SELECT T1.name FROM city AS T1 JOIN country AS T2 ON T1.countrycode = T2.code WHERE T2.continent ! = ' value '",
+        "feedback": "Find city 's name whose country 's continent equals Europe , countrylanguage 's language equals English and is official equals F."
+    },
+    {
+        "question": "Whic`h unique cities are in  Asian countries where Chinese is the official language?",
+        "db_id": "world_1",
+        "gold_parse": "SELECT DISTINCT T3.Name FROM country AS T1 JOIN countrylanguage AS T2 ON T1.Code  =  T2.CountryCode JOIN city AS T3 ON T1.Code  =  T3.CountryCode WHERE T2.IsOfficial  =  'T' AND T2.Language  =  'Chinese' AND T1.Continent  =  \"Asia\"",
+        "predicted_parse": "SELECT DISTINCT T1.name FROM city AS T1 JOIN country AS T2 ON T1.countrycode = T2.code JOIN countrylanguage AS T3 ON T2.code = T3.countrycode WHERE T2.continent = ' value ' AND T3.language = ' value '",
+        "feedback": "In Step 2 , replace continent with is official And Make certain that the continent is Asia."
+    },
+    {
+        "question": "Return the different names of cities that are in Asia and for which Chinese is the official language.",
+        "db_id": "world_1",
+        "gold_parse": "SELECT DISTINCT T3.Name FROM country AS T1 JOIN countrylanguage AS T2 ON T1.Code  =  T2.CountryCode JOIN city AS T3 ON T1.Code  =  T3.CountryCode WHERE T2.IsOfficial  =  'T' AND T2.Language  =  'Chinese' AND T1.Continent  =  \"Asia\"",
+        "predicted_parse": "SELECT DISTINCT T1.name FROM city AS T1 JOIN country AS T2 ON T1.countrycode = T2.code JOIN countrylanguage AS T3 ON T2.code = T3.countrycode WHERE T2.continent = ' value ' AND T3.language = ' value '",
+        "feedback": "In step 2 , Swap continent with is official and assure that the continent equals \"Asia\"."
+    },
+    {
+        "question": "What are the names and areas of countries with the top 5 largest area?",
+        "db_id": "world_1",
+        "gold_parse": "SELECT Name ,  SurfaceArea FROM country ORDER BY SurfaceArea DESC LIMIT 5",
+        "predicted_parse": "SELECT name , region FROM country ORDER BY surfacearea DESC LIMIT 0",
+        "feedback": "Supplant region with surface area"
+    },
+    {
+        "question": "What are the names of the countries that are in the continent of Europe and have a population of 80000?",
+        "db_id": "world_1",
+        "gold_parse": "SELECT Name FROM country WHERE continent  =  \"Europe\" AND Population  =  \"80000\"",
+        "predicted_parse": "SELECT name FROM country WHERE continent = ' value ' AND population > ' value '",
+        "feedback": "Take population equal to 80000\" in place of population greater than 103000\"."
+    },
+    {
+        "question": "Give the names of countries that are in Europe and have a population equal to 80000.",
+        "db_id": "world_1",
+        "gold_parse": "SELECT Name FROM country WHERE continent  =  \"Europe\" AND Population  =  \"80000\"",
+        "predicted_parse": "SELECT name FROM country WHERE continent = ' value ' AND population > = ' value '",
+        "feedback": "Swap population greater than or equals 103000\" with population equals to 80000\"."
+    },
+    {
+        "question": "What is the total population and average area of countries in the continent of North America whose area is bigger than 3000\uff1f",
+        "db_id": "world_1",
+        "gold_parse": "SELECT sum(Population) ,  avg(SurfaceArea) FROM country WHERE Continent  =  \"North America\" AND SurfaceArea  >  3000",
+        "predicted_parse": "SELECT Sum ( population ) , Avg ( surfacearea ) FROM country WHERE continent > ' value '",
+        "feedback": "continent Not \"greater then\" North America but \"equal to\" and ensuring surface area greater than 3000."
+    },
+    {
+        "question": "What is the language spoken by the largest percentage of people in each country?",
+        "db_id": "world_1",
+        "gold_parse": "SELECT LANGUAGE ,  CountryCode ,  max(Percentage) FROM countrylanguage GROUP BY CountryCode",
+        "predicted_parse": "SELECT T1.language FROM countrylanguage AS T1 JOIN country AS T2 ON T1.countrycode = T2.code GROUP BY T1.language ORDER BY Count ( * ) DESC LIMIT 0",
+        "feedback": "Find countrylanguage 's language for each country 's name whose corresponding value of countrylanguage 's percentage is largest."
+    },
+    {
+        "question": "What are the country codes of the different countries, and what are the languages spoken by the greatest percentage of people for each?",
+        "db_id": "world_1",
+        "gold_parse": "SELECT LANGUAGE ,  CountryCode ,  max(Percentage) FROM countrylanguage GROUP BY CountryCode",
+        "predicted_parse": "SELECT T1.countrycode , T1.language FROM countrylanguage AS T1 JOIN country AS T2 ON T1.countrycode = T2.code GROUP BY T1.countrycode ORDER BY Count ( * ) DESC LIMIT 0",
+        "feedback": "Find countrylanguage 's countrycode and corresponding language whose percentage 's value is largest."
+    },
+    {
+        "question": "Count the number of countries for which Spanish is the predominantly spoken language.",
+        "db_id": "world_1",
+        "gold_parse": "SELECT count(*) ,   max(Percentage) FROM countrylanguage WHERE LANGUAGE  =  \"Spanish\" GROUP BY CountryCode",
+        "predicted_parse": "SELECT Count ( * ) FROM countrylanguage WHERE language = ' value '",
+        "feedback": "Making sure that percentage value of row with Spanish is Highest."
+    },
+    {
+        "question": "What are the codes of countries where Spanish is spoken by the largest percentage of people?",
+        "db_id": "world_1",
+        "gold_parse": "SELECT CountryCode ,  max(Percentage) FROM countrylanguage WHERE LANGUAGE  =  \"Spanish\" GROUP BY CountryCode",
+        "predicted_parse": "SELECT T1.countrycode FROM countrylanguage AS T1 JOIN country AS T2 ON T1.countrycode = T2.code WHERE T1.language = ' value ' GROUP BY T1.countrycode ORDER BY Count ( * ) DESC LIMIT 0",
+        "feedback": "In step 3 , find percentage"
+    },
+    {
+        "question": "Return the codes of countries for which Spanish is the predominantly spoken language.",
+        "db_id": "world_1",
+        "gold_parse": "SELECT CountryCode ,  max(Percentage) FROM countrylanguage WHERE LANGUAGE  =  \"Spanish\" GROUP BY CountryCode",
+        "predicted_parse": "SELECT countrycode FROM countrylanguage WHERE language = ' value '",
+        "feedback": "Ensure that the percentage value is higher than other language for same country"
+    },
+    {
+        "question": "What are the names of conductors who have conducted at more than one orchestra?",
+        "db_id": "orchestra",
+        "gold_parse": "SELECT T1.Name FROM conductor AS T1 JOIN orchestra AS T2 ON T1.Conductor_ID  =  T2.Conductor_ID GROUP BY T2.Conductor_ID HAVING COUNT(*)  >  1",
+        "predicted_parse": "SELECT T1.name FROM conductor AS T1 JOIN orchestra AS T2 ON T1.conductor_id = T2.conductor_id GROUP BY T1.name HAVING Count ( * ) > ' value '",
+        "feedback": "In step 2 , Switch \"Name\" with conductor id"
+    },
+    {
+        "question": "Show the name of the conductor that has conducted the most number of orchestras.",
+        "db_id": "orchestra",
+        "gold_parse": "SELECT T1.Name FROM conductor AS T1 JOIN orchestra AS T2 ON T1.Conductor_ID  =  T2.Conductor_ID GROUP BY T2.Conductor_ID ORDER BY COUNT(*) DESC LIMIT 1",
+        "predicted_parse": "SELECT T1.name FROM conductor AS T1 JOIN orchestra AS T2 ON T1.conductor_id = T2.conductor_id GROUP BY T1.name ORDER BY Count ( * ) DESC LIMIT 0",
+        "feedback": "Swap name with Conductor ID(step 2); Only find for first row of descending order of step 2 's result(step 3)"
+    },
+    {
+        "question": "What is the name of the conductor who has conducted the most orchestras?",
+        "db_id": "orchestra",
+        "gold_parse": "SELECT T1.Name FROM conductor AS T1 JOIN orchestra AS T2 ON T1.Conductor_ID  =  T2.Conductor_ID GROUP BY T2.Conductor_ID ORDER BY COUNT(*) DESC LIMIT 1",
+        "predicted_parse": "SELECT T1.name FROM conductor AS T1 JOIN orchestra AS T2 ON T1.conductor_id = T2.conductor_id GROUP BY T1.name ORDER BY Count ( * ) DESC LIMIT 0",
+        "feedback": "Supersede name with Conductor ID(step 2); Ensure only to find for largest value of step 2 's results(step 3)."
+    },
+    {
+        "question": "Show the years in which orchestras that have given more than one performance are founded.",
+        "db_id": "orchestra",
+        "gold_parse": "SELECT Year_of_Founded FROM orchestra AS T1 JOIN performance AS T2 ON T1.Orchestra_ID  =  T2.Orchestra_ID GROUP BY T2.Orchestra_ID HAVING COUNT(*)  >  1",
+        "predicted_parse": "SELECT T1.year_of_founded FROM orchestra AS T1 JOIN performance AS T2 ON T1.orchestra_id = T2.orchestra_id GROUP BY T1.year_of_founded HAVING Count ( * ) > ' value '",
+        "feedback": "In step 2 , Supplant year of founded with orchestra id"
+    },
+    {
+        "question": "What are years of founding for orchestras that have had more than a single performance?",
+        "db_id": "orchestra",
+        "gold_parse": "SELECT Year_of_Founded FROM orchestra AS T1 JOIN performance AS T2 ON T1.Orchestra_ID  =  T2.Orchestra_ID GROUP BY T2.Orchestra_ID HAVING COUNT(*)  >  1",
+        "predicted_parse": "SELECT T1.year_of_founded FROM orchestra AS T1 JOIN performance AS T2 ON T1.orchestra_id = T2.orchestra_id GROUP BY T1.year_of_founded HAVING Count ( * ) > ' value '",
+        "feedback": "Replace year of founded with performance 's orchestra in step 2."
+    },
+    {
+        "question": "How many friends does each student have?",
+        "db_id": "network_1",
+        "gold_parse": "SELECT student_id ,  count(*) FROM Friend GROUP BY student_id",
+        "predicted_parse": "SELECT Count ( * ) FROM friend",
+        "feedback": "Find number of rows of each value of student id in friend table."
+    },
+    {
+        "question": "Return the name of the high school student with the most friends.",
+        "db_id": "network_1",
+        "gold_parse": "SELECT T2.name FROM Friend AS T1 JOIN Highschooler AS T2 ON T1.student_id  =  T2.id GROUP BY T1.student_id ORDER BY count(*) DESC LIMIT 1",
+        "predicted_parse": "SELECT T1.name FROM highschooler AS T1 JOIN friend AS T2 ON T1.id = T2.student_id WHERE T1.id = ' value ' GROUP BY T1.name ORDER BY Count ( * ) DESC LIMIT 0",
+        "feedback": "Do not require step 2. In step 3 swap \"step 2\" with \"step 1\"."
+    },
+    {
+        "question": "Show the names of high schoolers who have at least 3 friends.",
+        "db_id": "network_1",
+        "gold_parse": "SELECT T2.name FROM Friend AS T1 JOIN Highschooler AS T2 ON T1.student_id  =  T2.id GROUP BY T1.student_id HAVING count(*)  >=  3",
+        "predicted_parse": "SELECT T1.name FROM highschooler AS T1 JOIN friend AS T2 ON T1.id = T2.student_id GROUP BY T1.name HAVING Count ( * ) > = ' value '",
+        "feedback": "Replace name with student id in step 2."
+    },
+    {
+        "question": "Show the names of all of the high schooler Kyle's friends.",
+        "db_id": "network_1",
+        "gold_parse": "SELECT T3.name FROM Friend AS T1 JOIN Highschooler AS T2 ON T1.student_id  =  T2.id JOIN Highschooler AS T3 ON T1.friend_id  =  T3.id WHERE T2.name  =  \"Kyle\"",
+        "predicted_parse": "SELECT name FROM highschooler WHERE name = ' value ' AND name = ' value '",
+        "feedback": "Find name of high schooler table whose friend 's friend id corresponding name equals Kyle."
+    },
+    {
+        "question": "Return the names of friends of the high school student Kyle.",
+        "db_id": "network_1",
+        "gold_parse": "SELECT T3.name FROM Friend AS T1 JOIN Highschooler AS T2 ON T1.student_id  =  T2.id JOIN Highschooler AS T3 ON T1.friend_id  =  T3.id WHERE T2.name  =  \"Kyle\"",
+        "predicted_parse": "SELECT T1.liked_id FROM likes AS T1 JOIN highschooler AS T2 ON T1.student_id = T2.id WHERE T2.name = ' value '",
+        "feedback": "Step 1 , Replace \"Likes\" with \"Friend\". Step 2 , Replace liked id with friend id and find their corresponding name"
+    },
+    {
+        "question": "How many friends does the high school student Kyle have?",
+        "db_id": "network_1",
+        "gold_parse": "SELECT count(*) FROM Friend AS T1 JOIN Highschooler AS T2 ON T1.student_id  =  T2.id WHERE T2.name  =  \"Kyle\"",
+        "predicted_parse": "SELECT Count ( T1.liked_id ) FROM likes AS T1 JOIN highschooler AS T2 ON T1.student_id = T2.id WHERE T2.name = ' value '",
+        "feedback": "Replace likes table with friend table in step 1 and liked id with friend id in step 2."
+    },
+    {
+        "question": "Show ids of all students who do not have any friends.",
+        "db_id": "network_1",
+        "gold_parse": "SELECT id FROM Highschooler EXCEPT SELECT student_id FROM Friend",
+        "predicted_parse": "SELECT T1.student_id FROM likes AS T1 EXCEPT SELECT T2.student_id FROM friend AS T2",
+        "feedback": "In Step 1 , In place of student id of likes table\" put high schooler 's ID\"."
+    },
+    {
+        "question": "Show names of all high school students who do not have any friends.",
+        "db_id": "network_1",
+        "gold_parse": "SELECT name FROM Highschooler EXCEPT SELECT T2.name FROM Friend AS T1 JOIN Highschooler AS T2 ON T1.student_id  =  T2.id",
+        "predicted_parse": "SELECT name FROM highschooler EXCEPT SELECT name FROM highschooler",
+        "feedback": "In step 2 ensure to find for those whose corresponding student id present in friend table."
+    },
+    {
+        "question": "What are the names of students who have no friends?",
+        "db_id": "network_1",
+        "gold_parse": "SELECT name FROM Highschooler EXCEPT SELECT T2.name FROM Friend AS T1 JOIN Highschooler AS T2 ON T1.student_id  =  T2.id",
+        "predicted_parse": "SELECT name FROM highschooler EXCEPT SELECT name FROM highschooler",
+        "feedback": "Find high schooler 's name whose id is not present as student id in friend table."
+    },
+    {
+        "question": "Show name of all students who have some friends and also are liked by someone else.",
+        "db_id": "network_1",
+        "gold_parse": "SELECT T2.name FROM Friend AS T1 JOIN Highschooler AS T2 ON T1.student_id  =  T2.id INTERSECT SELECT T2.name FROM Likes AS T1 JOIN Highschooler AS T2 ON T1.liked_id  =  T2.id",
+        "predicted_parse": "SELECT T1.name FROM highschooler AS T1 INTERSECT SELECT T2.student_id FROM likes AS T2",
+        "feedback": "Check corresponding student id present in friend table(step 1);Find high schooler 's name whose student id present in likes table(step 2)"
+    },
+    {
+        "question": "What are the names of high schoolers who both have friends and are liked?",
+        "db_id": "network_1",
+        "gold_parse": "SELECT T2.name FROM Friend AS T1 JOIN Highschooler AS T2 ON T1.student_id  =  T2.id INTERSECT SELECT T2.name FROM Likes AS T1 JOIN Highschooler AS T2 ON T1.liked_id  =  T2.id",
+        "predicted_parse": "SELECT T1.name FROM highschooler AS T1 JOIN friend AS T2 ON T1.id = T2.student_id INTERSECT SELECT T1.name FROM highschooler AS T1",
+        "feedback": "Find id of high schooler table whose student id also present in both friend and likes table."
+    },
+    {
+        "question": "Show the names of high schoolers who have likes, and numbers of likes for each.",
+        "db_id": "network_1",
+        "gold_parse": "SELECT T2.name ,  count(*) FROM Likes AS T1 JOIN Highschooler AS T2 ON T1.student_id  =  T2.id GROUP BY T1.student_id",
+        "predicted_parse": "SELECT T1.name , Count ( * ) FROM highschooler AS T1 JOIN likes AS T2 ON T1.id = T2.student_id GROUP BY T1.name",
+        "feedback": "Step 2 , Find name for which id is present in likes Count liked id for each name"
+    },
+    {
+        "question": "What are the names of high schoolers who have likes, and how many likes does each have?",
+        "db_id": "network_1",
+        "gold_parse": "SELECT T2.name ,  count(*) FROM Likes AS T1 JOIN Highschooler AS T2 ON T1.student_id  =  T2.id GROUP BY T1.student_id",
+        "predicted_parse": "SELECT Count ( * ) , T2.name FROM likes AS T1 JOIN highschooler AS T2 ON T1.student_id = T2.id GROUP BY T2.name",
+        "feedback": "Step 2 , find name of only whose student id is in likes , also give count of liked id"
+    },
+    {
+        "question": "What is the name of the high schooler who has the greatest number of likes?",
+        "db_id": "network_1",
+        "gold_parse": "SELECT T2.name FROM Likes AS T1 JOIN Highschooler AS T2 ON T1.student_id  =  T2.id GROUP BY T1.student_id ORDER BY count(*) DESC LIMIT 1",
+        "predicted_parse": "SELECT T1.name FROM highschooler AS T1 JOIN likes AS T2 ON T1.id = T2.student_id GROUP BY T1.name ORDER BY Count ( * ) DESC LIMIT 0",
+        "feedback": "Replace name with student id(step 2); Only find for largest value of results of step 2 in step 3."
+    },
+    {
+        "question": "Give the name of the student with the most likes.",
+        "db_id": "network_1",
+        "gold_parse": "SELECT T2.name FROM Likes AS T1 JOIN Highschooler AS T2 ON T1.student_id  =  T2.id GROUP BY T1.student_id ORDER BY count(*) DESC LIMIT 1",
+        "predicted_parse": "SELECT T1.name FROM highschooler AS T1 JOIN likes AS T2 ON T1.id = T2.student_id GROUP BY T1.name ORDER BY Count ( * ) DESC LIMIT 0",
+        "feedback": "In step 2 , Switch name with student id"
+    },
+    {
+        "question": "Show the names of students who have a grade higher than 5 and have at least 2 friends.",
+        "db_id": "network_1",
+        "gold_parse": "SELECT T2.name FROM Friend AS T1 JOIN Highschooler AS T2 ON T1.student_id  =  T2.id WHERE T2.grade  >  5 GROUP BY T1.student_id HAVING count(*)  >=  2",
+        "predicted_parse": "SELECT T1.name FROM highschooler AS T1 JOIN friend AS T2 ON T1.id = T2.student_id WHERE T1.grade > ' value ' GROUP BY T1.name HAVING Count ( * ) > = ' value '",
+        "feedback": "Find high schooler 's name where grade is above 5 and corresponding count of friend id above 2."
+    },
+    {
+        "question": "Find the average grade of all students who have some friends.",
+        "db_id": "network_1",
+        "gold_parse": "SELECT avg(grade) FROM Highschooler WHERE id IN (SELECT T1.student_id FROM Friend AS T1 JOIN Highschooler AS T2 ON T1.student_id  =  T2.id)",
+        "predicted_parse": "SELECT Avg ( DISTINCT grade ) FROM highschooler",
+        "feedback": "Assure to find only for whose high schooler 's id is present in friend 's student id"
+    },
+    {
+        "question": "What is the average grade of students who have friends?",
+        "db_id": "network_1",
+        "gold_parse": "SELECT avg(grade) FROM Highschooler WHERE id IN (SELECT T1.student_id FROM Friend AS T1 JOIN Highschooler AS T2 ON T1.student_id  =  T2.id)",
+        "predicted_parse": "SELECT Avg ( T1.grade ) FROM highschooler AS T1 JOIN friend AS T2 ON T1.id = T2.student_id WHERE T2.friend_id ! = ' value '",
+        "feedback": "Remove \"whose friend id not equals 1381\" phrase from step 2."
+    },
+    {
+        "question": "What is the lowest grade of students who do not have any friends?",
+        "db_id": "network_1",
+        "gold_parse": "SELECT min(grade) FROM Highschooler WHERE id NOT IN (SELECT T1.student_id FROM Friend AS T1 JOIN Highschooler AS T2 ON T1.student_id  =  T2.id)",
+        "predicted_parse": "SELECT T1.grade FROM highschooler AS T1 EXCEPT SELECT T2.student_id FROM friend AS T2",
+        "feedback": "Find minimum grade of high schooler whose corresponding id not present in friend 's student id"
+    },
+    {
+        "question": "Find the average age of the dogs who went through treatments.",
+        "db_id": "dog_kennels",
+        "gold_parse": "SELECT avg(age) FROM Dogs WHERE dog_id IN ( SELECT dog_id FROM Treatments )",
+        "predicted_parse": "SELECT Avg ( age ) FROM dogs",
+        "feedback": "Should ensure that corresponding dog id is present in treatments table."
+    },
+    {
+        "question": "Which professionals live in the state of Indiana or have done treatment on more than 2 treatments? List his or her id, last name and cell phone.",
+        "db_id": "dog_kennels",
+        "gold_parse": "SELECT professional_id ,  last_name ,  cell_number FROM Professionals WHERE state  =  'Indiana' UNION SELECT T1.professional_id ,  T1.last_name ,  T1.cell_number FROM Professionals AS T1 JOIN Treatments AS T2 ON T1.professional_id  =  T2.professional_id GROUP BY T1.professional_id HAVING count(*)  >  2",
+        "predicted_parse": "SELECT T1.professional_id , T1.last_name , T1.zip_code FROM professionals AS T1 JOIN treatments AS T2 ON T1.professional_id = T2.professional_id WHERE T1.state = ' value ' UNION SELECT T1.professional_id , T1.last_name FROM professionals AS T1 JOIN treatments AS T2 ON T1.professional_id = T2.professional_id GROUP BY T1.professional_id HAVING Count ( * ) > ' value '",
+        "feedback": "Interchange zip code with cell number in step 2; Also find cell number ahead of last name in step 4."
+    },
+    {
+        "question": "Which dogs have not cost their owner more than 1000 for treatment? List the dog names.",
+        "db_id": "dog_kennels",
+        "gold_parse": "SELECT name FROM Dogs WHERE dog_id NOT IN( SELECT dog_id FROM Treatments GROUP BY dog_id HAVING sum(cost_of_treatment)  >  1000 )",
+        "predicted_parse": "SELECT T1.name FROM dogs AS T1 JOIN treatments AS T2 ON T1.dog_id = T2.dog_id WHERE T2.cost_of_treatment ! = ' value '",
+        "feedback": "In step 2 , Ensure that summation of cost of treatment is taken."
+    },
+    {
+        "question": "Which first names are used for professionals or owners but are not used as dog names?",
+        "db_id": "dog_kennels",
+        "gold_parse": "SELECT first_name FROM Professionals UNION SELECT first_name FROM Owners EXCEPT SELECT name FROM Dogs",
+        "predicted_parse": "SELECT T1.first_name FROM professionals AS T1 EXCEPT SELECT T2.first_name FROM owners AS T2",
+        "feedback": "Step 3 , Find name of dogs table which are not result of Step 1 and 2."
+    },
+    {
+        "question": "Find the first names that are used for professionals or owners but are not used as dog names.",
+        "db_id": "dog_kennels",
+        "gold_parse": "SELECT first_name FROM Professionals UNION SELECT first_name FROM Owners EXCEPT SELECT name FROM Dogs",
+        "predicted_parse": "SELECT DISTINCT T1.first_name FROM professionals AS T1 EXCEPT SELECT DISTINCT T2.first_name FROM owners AS T2",
+        "feedback": "Add owners table in step 1 ahead of professionals table; Replace owners with dogs in step 2."
+    },
+    {
+        "question": "Which professional did not operate any treatment on dogs? List the professional's id, role and email.",
+        "db_id": "dog_kennels",
+        "gold_parse": "SELECT professional_id ,  role_code ,  email_address FROM Professionals EXCEPT SELECT T1.professional_id ,  T1.role_code ,  T1.email_address FROM Professionals AS T1 JOIN Treatments AS T2 ON T1.professional_id  =  T2.professional_id",
+        "predicted_parse": "SELECT professional_id , role_code , email_address FROM professionals EXCEPT SELECT professional_id , role_code , email_address FROM professionals",
+        "feedback": "In step 2 , Replace professionals table with treatments table."
+    },
+    {
+        "question": "Give me the id, role and email of the professionals who did not perform any treatment on dogs.",
+        "db_id": "dog_kennels",
+        "gold_parse": "SELECT professional_id ,  role_code ,  email_address FROM Professionals EXCEPT SELECT T1.professional_id ,  T1.role_code ,  T1.email_address FROM Professionals AS T1 JOIN Treatments AS T2 ON T1.professional_id  =  T2.professional_id",
+        "predicted_parse": "SELECT professional_id , role_code , email_address FROM professionals EXCEPT SELECT professional_id , role_code , email_address FROM professionals WHERE role_code = ' value '",
+        "feedback": "Ensure professionals is present in treatments table and , remove \"for which role code equals Employee\" in step 2."
+    },
+    {
+        "question": "Which professionals have done at least two treatments? List the professional's id, role, and first name.",
+        "db_id": "dog_kennels",
+        "gold_parse": "SELECT T1.professional_id ,  T1.role_code ,  T1.first_name FROM Professionals AS T1 JOIN Treatments AS T2 ON T1.professional_id  =  T2.professional_id GROUP BY T1.professional_id HAVING count(*)  >=  2",
+        "predicted_parse": "SELECT T1.professional_id , T1.role_code , T1.last_name FROM professionals AS T1 JOIN treatments AS T2 ON T1.professional_id = T2.professional_id GROUP BY T1.professional_id HAVING Count ( * ) > = ' value '",
+        "feedback": "Supersede last name with first name in step 3."
+    },
+    {
+        "question": "What is the description of the treatment type that costs the least money in total?",
+        "db_id": "dog_kennels",
+        "gold_parse": "SELECT T1.treatment_type_description FROM Treatment_types AS T1 JOIN Treatments AS T2 ON T1.treatment_type_code  =  T2.treatment_type_code GROUP BY T1.treatment_type_code ORDER BY sum(cost_of_treatment) ASC LIMIT 1",
+        "predicted_parse": "SELECT T1.treatment_type_description FROM treatment_types AS T1 JOIN treatments AS T2 ON T1.treatment_type_code = T2.treatment_type_code GROUP BY T1.treatment_type_description ORDER BY Sum ( T2.cost_of_treatment ) ASC LIMIT 0",
+        "feedback": "Only show top most row of ascending order of step 2 's results in step 3."
+    },
+    {
+        "question": "Give me the description of the treatment type whose total cost is the lowest.",
+        "db_id": "dog_kennels",
+        "gold_parse": "SELECT T1.treatment_type_description FROM Treatment_types AS T1 JOIN Treatments AS T2 ON T1.treatment_type_code  =  T2.treatment_type_code GROUP BY T1.treatment_type_code ORDER BY sum(cost_of_treatment) ASC LIMIT 1",
+        "predicted_parse": "SELECT T1.treatment_type_description FROM treatment_types AS T1 JOIN treatments AS T2 ON T1.treatment_type_code = T2.treatment_type_code GROUP BY T1.treatment_type_description ORDER BY Sum ( T2.cost_of_treatment ) ASC LIMIT 0",
+        "feedback": "Only need to find smallest value from results of step 2."
+    },
+    {
+        "question": "Which owner has paid the largest amount of money in total for their dogs? Show the owner id and zip code.",
+        "db_id": "dog_kennels",
+        "gold_parse": "SELECT T1.owner_id ,  T1.zip_code FROM Owners AS T1 JOIN Dogs AS T2 ON T1.owner_id  =  T2.owner_id JOIN Treatments AS T3 ON T2.dog_id  =  T3.dog_id GROUP BY T1.owner_id ORDER BY sum(T3.cost_of_treatment) DESC LIMIT 1",
+        "predicted_parse": "SELECT * FROM breeds",
+        "feedback": "Find the owners 's owner id and zip code for which corresponding Sum of treatments 's cost of treatment is maximum."
+    },
+    {
+        "question": "Find the owner id and zip code of the owner who spent the most money in total for his or her dogs.",
+        "db_id": "dog_kennels",
+        "gold_parse": "SELECT T1.owner_id ,  T1.zip_code FROM Owners AS T1 JOIN Dogs AS T2 ON T1.owner_id  =  T2.owner_id JOIN Treatments AS T3 ON T2.dog_id  =  T3.dog_id GROUP BY T1.owner_id ORDER BY sum(T3.cost_of_treatment) DESC LIMIT 1",
+        "predicted_parse": "SELECT T1.owner_id , T1.zip_code FROM owners AS T1 JOIN dogs AS T2 ON T1.owner_id = T2.owner_id GROUP BY T1.owner_id ORDER BY Sum ( T2.weight ) DESC LIMIT 0",
+        "feedback": "Also add treatments table(step 1); Replace weight with cost of treatment 2); Only show first row of descending order(step 3)."
+    },
+    {
+        "question": "Which dogs are of the rarest breed? Show their names and treatment dates.",
+        "db_id": "dog_kennels",
+        "gold_parse": "SELECT T1.name ,  T2.date_of_treatment FROM Dogs AS T1 JOIN Treatments AS T2 ON T1.dog_id  =  T2.dog_id WHERE T1.breed_code  =  ( SELECT breed_code FROM Dogs GROUP BY breed_code ORDER BY count(*) ASC LIMIT 1 )",
+        "predicted_parse": "SELECT T2.name , T1.date_of_treatment FROM treatments AS T1 JOIN dogs AS T2 ON T1.dog_id = T2.dog_id JOIN breeds AS T3 ON T2.breed_code = T3.breed_code GROUP BY T2.dog_id ORDER BY Count ( * ) ASC LIMIT 0",
+        "feedback": "Supersede dog id with breed code in step 2;In step 3 only find for smallest value of step 2 's results."
+    },
+    {
+        "question": "What are the arriving date and the departing date of the dogs who have gone through a treatment?",
+        "db_id": "dog_kennels",
+        "gold_parse": "SELECT DISTINCT T1.date_arrived ,  T1.date_departed FROM Dogs AS T1 JOIN Treatments AS T2 ON T1.dog_id  =  T2.dog_id",
+        "predicted_parse": "SELECT date_arrived , date_departed FROM dogs",
+        "feedback": "Ensure to find for those whose corresponding dog id is present in treatments table."
+    },
+    {
+        "question": "Find the arriving date and the departing date of the dogs that received a treatment.",
+        "db_id": "dog_kennels",
+        "gold_parse": "SELECT DISTINCT T1.date_arrived ,  T1.date_departed FROM Dogs AS T1 JOIN Treatments AS T2 ON T1.dog_id  =  T2.dog_id",
+        "predicted_parse": "SELECT date_arrived , date_departed FROM dogs",
+        "feedback": "Find for those whose corresponding dog id present in treatments table."
+    },
+    {
+        "question": "List the last name of the owner owning the youngest dog.",
+        "db_id": "dog_kennels",
+        "gold_parse": "SELECT T1.last_name FROM Owners AS T1 JOIN Dogs AS T2 ON T1.owner_id  =  T2.owner_id WHERE T2.age  =  ( SELECT max(age) FROM Dogs )",
+        "predicted_parse": "SELECT T1.last_name FROM owners AS T1 JOIN dogs AS T2 ON T1.owner_id = T2.owner_id ORDER BY T2.age ASC LIMIT 0",
+        "feedback": "Find last name for smallest value of age , no need of ascending order in step 2."
+    },
+    {
+        "question": "Who owns the youngest dog? Give me his or her last name.",
+        "db_id": "dog_kennels",
+        "gold_parse": "SELECT T1.last_name FROM Owners AS T1 JOIN Dogs AS T2 ON T1.owner_id  =  T2.owner_id WHERE T2.age  =  ( SELECT max(age) FROM Dogs )",
+        "predicted_parse": "SELECT T1.last_name FROM owners AS T1 JOIN dogs AS T2 ON T1.owner_id = T2.owner_id ORDER BY T2.age ASC LIMIT 0",
+        "feedback": "find only smallest age , first one after ordering in step 2"
+    },
+    {
+        "question": "How many dogs went through any treatments?",
+        "db_id": "dog_kennels",
+        "gold_parse": "SELECT count(DISTINCT dog_id) FROM Treatments",
+        "predicted_parse": "SELECT Count ( * ) FROM treatments",
+        "feedback": "Find number of dog id without repetition."
+    },
+    {
+        "question": "Which professionals live in a city containing the substring 'West'? List his or her role, street, city and state.",
+        "db_id": "dog_kennels",
+        "gold_parse": "SELECT role_code ,  street ,  city ,  state FROM professionals WHERE city LIKE '%West%'",
+        "predicted_parse": "SELECT role_code , street , state , state FROM professionals WHERE city LIKE ' value '",
+        "feedback": "Substitute first \"state\" with \"city\"."
+    },
+    {
+        "question": "Find the role, street, city and state of the professionals living in a city that contains the substring 'West'.",
+        "db_id": "dog_kennels",
+        "gold_parse": "SELECT role_code ,  street ,  city ,  state FROM professionals WHERE city LIKE '%West%'",
+        "predicted_parse": "SELECT role_code , street , state FROM professionals WHERE city LIKE ' value '",
+        "feedback": "Also find city ahead of state"
+    },
+    {
+        "question": "What are the dog name, age and weight of the dogs that were abandoned? Note that 1 stands for yes, and 0 stands for no in the tables.",
+        "db_id": "dog_kennels",
+        "gold_parse": "SELECT name ,  age ,  weight FROM Dogs WHERE abandoned_yn  =  1",
+        "predicted_parse": "SELECT name , age , weight FROM dogs WHERE abandoned_yn LIKE ' value '",
+        "feedback": "Swap \"contains\" with \"equals\"."
+    },
+    {
+        "question": "Tell me the age of the oldest dog.",
+        "db_id": "dog_kennels",
+        "gold_parse": "SELECT max(age) FROM Dogs",
+        "predicted_parse": "SELECT age FROM dogs ORDER BY age DESC LIMIT 0",
+        "feedback": "find largest age"
+    },
+    {
+        "question": "How much does the most expensive charge type costs?",
+        "db_id": "dog_kennels",
+        "gold_parse": "SELECT max(charge_amount) FROM Charges",
+        "predicted_parse": "SELECT charge_type FROM charges ORDER BY charge_amount DESC LIMIT 0",
+        "feedback": "need to find largest charge amount"
+    },
+    {
+        "question": "What is the charge amount of the most expensive charge type?",
+        "db_id": "dog_kennels",
+        "gold_parse": "SELECT max(charge_amount) FROM Charges",
+        "predicted_parse": "SELECT charge_amount FROM charges ORDER BY charge_amount DESC LIMIT 0",
+        "feedback": "Find for the top most row of descending order only."
+    },
+    {
+        "question": "List the email, cell phone and home phone of all the professionals.",
+        "db_id": "dog_kennels",
+        "gold_parse": "SELECT email_address ,  cell_number ,  home_phone FROM professionals",
+        "predicted_parse": "SELECT T1.email_address , T2.cell_number , T2.home_phone FROM owners AS T1 JOIN professionals AS T2 ON T1.first_name = T2.first_name",
+        "feedback": "Find email address , home phone , cell number of professionals table."
+    },
+    {
+        "question": "What are the email, cell phone and home phone of each professional?",
+        "db_id": "dog_kennels",
+        "gold_parse": "SELECT email_address ,  cell_number ,  home_phone FROM professionals",
+        "predicted_parse": "SELECT T1.email_address , T2.cell_number , T2.home_phone FROM owners AS T1 JOIN professionals AS T2 ON T1.first_name = T2.first_name",
+        "feedback": "In step 2 , Replace owners 's email address with professionals 's email address"
+    },
+    {
+        "question": "Please show the most common citizenship of singers.",
+        "db_id": "singer",
+        "gold_parse": "SELECT Citizenship FROM singer GROUP BY Citizenship ORDER BY COUNT(*) DESC LIMIT 1",
+        "predicted_parse": "SELECT T1.citizenship FROM singer AS T1 JOIN song AS T2 ON T1.singer_id = T2.singer_id GROUP BY T1.citizenship ORDER BY Count ( * ) DESC LIMIT 0",
+        "feedback": "No need of descending order; find for largest value of results of step 2 in step 3."
+    },
+    {
+        "question": "What is the msot common singer citizenship?",
+        "db_id": "singer",
+        "gold_parse": "SELECT Citizenship FROM singer GROUP BY Citizenship ORDER BY COUNT(*) DESC LIMIT 1",
+        "predicted_parse": "SELECT citizenship FROM singer GROUP BY citizenship ORDER BY Count ( * ) DESC",
+        "feedback": "Find narrowly for first row of descending order of results of step 1 in step 2."
+    },
+    {
+        "question": "What is the feature type name of feature AirCon?",
+        "db_id": "real_estate_properties",
+        "gold_parse": "SELECT T2.feature_type_name FROM Other_Available_Features AS T1 JOIN Ref_Feature_Types AS T2 ON T1.feature_type_code  =  T2.feature_type_code WHERE T1.feature_name  =  \"AirCon\"",
+        "predicted_parse": "SELECT feature_type_name FROM ref_feature_types",
+        "feedback": "Ensure to find for whose corresponding other available features 's feature name equals AirCon."
+    },
+    {
+        "question": "Show the property type descriptions of properties belonging to that code.",
+        "db_id": "real_estate_properties",
+        "gold_parse": "SELECT T2.property_type_description FROM Properties AS T1 JOIN Ref_Property_Types AS T2 ON T1.property_type_code  =  T2.property_type_code GROUP BY T1.property_type_code",
+        "predicted_parse": "SELECT property_type_description FROM ref_property_types WHERE property_type_code = ' value '",
+        "feedback": "Insufficient question is given , cannot identify exact code."
+    },
+    {
+        "question": "What are the names of properties that are either houses or apartments with more than 1 room?",
+        "db_id": "real_estate_properties",
+        "gold_parse": "SELECT property_name FROM Properties WHERE property_type_code  =  \"House\" UNION SELECT property_name FROM Properties WHERE property_type_code  =  \"Apartment\" AND room_count  >  1",
+        "predicted_parse": "SELECT property_name FROM properties WHERE room_count > ' value ' OR room_count > ' value '",
+        "feedback": "Not room count greater than Apartment\" but property type code equals houses or Apartment\"."
+    }
+]
