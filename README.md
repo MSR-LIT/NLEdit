@@ -12,7 +12,12 @@ NAACL 2021.
 
 conda create -n nledit python=3.7
 
-Install: nltk, numpy, attrs
+Install: nltk, numpy, attrs, jsonnet
+
+To generate synthetic data:
+    cd src/dataaugmentation
+    python main.py configs.jsonnet
+
 
 
 ## Citation
