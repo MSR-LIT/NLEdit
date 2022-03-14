@@ -2,7 +2,7 @@
 
 Soon, we will use this repo to release the code and datasets used in 
 
-NL-EDIT: Correcting semantic parse errors through natural language interaction.<br />
+[NL-EDIT: Correcting semantic parse errors through natural language interaction.](https://aclanthology.org/2021.naacl-main.444/)<br />
 Ahmed Elgohary, Christopher Meek, Matthew Richardson, Adam Fourney, Gonzalo Ramos and Ahmed Hassan Awadallah.<br />
 NAACL 2021.
 
